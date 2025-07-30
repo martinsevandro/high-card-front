@@ -1,34 +1,43 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { RiotService } from '../../services/riot.service';
+import { Card } from '../../models/card.model';
 
 @Component({
   selector: 'app-navbar',
   standalone: false,
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  searchForm: FormGroup;
+  name: string = '';
+  tag: string = '';
+  server: string = 'br1';  
+  matchId: string = '';
 
-  constructor(private fb: FormBuilder) {
-    this.searchForm = this.fb.group({
-      riotName: ['', Validators.required],
-      riotTag: ['', Validators.required],
-      riotServer: ['br1', Validators.required],
-      matchId: [''],
+  @Output() cardLoaded = new EventEmitter<Card>();
 
-    });
-  }
+  constructor(private riotService: RiotService) {}
 
-  onSubmit() {
-    if (this.searchForm.valid){
-      const formValues = this.searchForm.value;
-      console.log('Form Values enviado:', formValues);
+  async buscarCarta(): Promise<void> {
+    if (!this.name || !this.tag || !this.server) return;
+    
+    try {
+      const account = await this.riotService.getAccountByRiotId(this.name, this.tag, this.server);
+      let card: Card | undefined;
+
+      if (this.matchId && this.matchId.trim() !== '') {
+        card = await this.riotService.getSpecificMatchDetails(account.puuid, this.server, this.matchId);
+      } else {
+        card = await this.riotService.getLatestMatchDetails(account.puuid, this.server);
+      } 
+
+      if(card){
+        this.cardLoaded.emit(card);
+      } else {
+        console.error('carta nao encontrada');
+      }
+      
+    } catch (error) {
+      console.error('Erro ao buscar dados da carta:', error);
     }
   }
-
-  onSaveImage() {
-    console.log('Salvar imagem');
-  }
-
 }

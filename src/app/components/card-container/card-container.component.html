@@ -1,1 +1,9 @@
-<p>card-container works!</p>
+<div class="flex justify-center items-center mt-10  w-full">
+  <div *ngIf="card; else noCard">
+    <app-card [card]="card"></app-card>
+  </div>
+
+  <ng-template #noCard>
+    <p class="text-gray-500">Nenhuma carta carregada.</p>
+  </ng-template>
+</div>

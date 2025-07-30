@@ -1,0 +1,75 @@
+<div class="carta flip-card w-[308px] h-[560px] relative">
+  <div class="flip-inner relative w-full h-full">
+
+    <!-- Frente -->
+    <div
+      class="flip-front relative w-full h-full rounded-none overflow-hidden shadow-lg border-4"
+      [ngStyle]="{ 'border': '4px solid ' + card.corDaBorda }"
+    >
+      <img
+        [src]="card.splashArt"
+        class="absolute w-full h-full object-cover"
+        alt="card-champion"
+      />
+
+      <div class="absolute bottom-0 w-full text-white p-4 space-y-2">
+        
+
+        <!-- Nome estilizado -->
+        <div class="flex justify-center">
+          <h2
+            class="text-center text-blur"
+            style="
+              font-family: 'Herr Von Muellerhoff', cursive;
+              color: white;
+              -webkit-text-stroke: 0.5px gold;
+              text-shadow: 0 0 9px black;
+              font-size: clamp(2.5rem, 5vw, 3.4rem);
+            "
+          >
+            {{ card.riotIdGameName }}
+          </h2>
+        </div>
+
+        
+        <!-- Conteúdo -->
+        <!-- Estatísticas -->
+        <div [innerHTML]="sanitizedStats"></div>
+
+        <!-- Runas -->
+        <div [innerHTML]="sanitizedRunas"></div>
+
+        <!-- Itens e Spells -->
+        <div class="flex justify-between items-center mt-2">
+          <div [innerHTML]="sanitizedItems"></div>
+          <div [innerHTML]="sanitizedSpells"></div>
+        </div>
+
+        <!-- Achievements e data -->
+        <div class="flex items-center">
+          <span [innerHTML]="sanitizedAchievements" class="flex gap-1 items-center w-6 h-6"></span>
+        </div>
+
+        
+      </div>
+    </div>
+
+    <!-- Verso -->
+    <div
+      class="flip-back rounded-none overflow-hidden shadow-lg border-4"
+      [ngStyle]="{
+        'border': '4px solid transparent',
+        'border-image': card.corDoVerso + ' 1',
+        'background': card.corDoVerso
+      }"
+    >
+      <div
+        class="items flex justify-center items-center h-full"
+        style="background-image: url('assets/img/lol-icone-back.png');
+               background-size: 70%;
+               background-repeat: no-repeat;
+               background-position: center;"
+      ></div>
+    </div>
+  </div>
+</div>

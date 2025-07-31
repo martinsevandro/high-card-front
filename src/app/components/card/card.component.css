@@ -2,6 +2,17 @@
   perspective: 1000px;
 }
 
+.card-stats-text {
+  font-family: Poppins;
+  font-weight: 500;
+  color: white;
+  -webkit-text-stroke: 0.1px black;
+  text-shadow: 0 0 9px black;
+
+  padding: 0;
+}
+
+
 .flip-inner {
   position: relative;
   width: 100%;
@@ -26,3 +37,4 @@
 .flip-back {
   transform: rotateY(180deg);
 }
+

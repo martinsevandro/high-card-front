@@ -14,7 +14,9 @@ export class CardComponent implements OnInit {
  
   flipped = false;
 
-  sanitizedStats: SafeHtml = '';
+  sanitizedFirstLine: SafeHtml = '';
+  sanitizedSecondLine: SafeHtml = '';
+  sanitizedThirdLine: [string, string][] = [];
   sanitizedRunas: SafeHtml = '';
   sanitizedSpells: SafeHtml = '';
   sanitizedItems: SafeHtml = '';
@@ -25,7 +27,9 @@ export class CardComponent implements OnInit {
   ngOnInit() {
     const blocks = this.cardHtmlBuilder.buildCardBlocksSanitized(this.card); 
 
-    this.sanitizedStats = blocks.stats;
+    this.sanitizedFirstLine = blocks.firstLine;
+    this.sanitizedSecondLine = blocks.secondLine;
+    this.sanitizedThirdLine = blocks.thirdLine;
     this.sanitizedRunas = blocks.runas;
     this.sanitizedSpells = blocks.spells;
     this.sanitizedItems = blocks.items;

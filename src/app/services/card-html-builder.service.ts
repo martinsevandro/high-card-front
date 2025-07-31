@@ -31,13 +31,13 @@ export class CardHtmlBuilderService {
   buildFirstLine(data: any, csLabel: string): string {
     return `
       <div class="flex justify-between items-end text-sm font-medium">
-        <span class="bg-gray-800 text-white px-1 rounded">
+        <span class=" text-white px-1 rounded">
           ${this.escapeHTML(`${data.kills}/${data.deaths}/${data.assists}`)}
         </span>
-        <span class="bg-gray-800 text-white px-1 rounded">
+        <span class=" text-white px-1 rounded">
           ${this.escapeHTML(`${this.formatTime(data.gameLength)}`)}
         </span>
-        <span class="bg-gray-800 text-white px-1 rounded">
+        <span class=" text-white px-1 rounded">
           ${csLabel}
         </span>
       </div>
@@ -47,36 +47,55 @@ export class CardHtmlBuilderService {
 
   buildSecondLine(data: any, thirdValue: string): string {
     return `
-      <div class="flex justify-between text-sm font-medium px-1 text-center"> 
-        <span class="bg-gray-800 text-white px-1 rounded">
+      <div class="flex justify-between text-sm font-medium text-center p-0"> 
+        <span class=" text-white px-1 rounded">
           ${this.escapeHTML(data.kda)} KDA
         </span>
-        <span class="bg-gray-800 text-white px-1 rounded">
+        <span class=" text-white px-1 rounded">
           ${this.escapeHTML(data.killParticipation)} KP%
         </span>
-        <span class="bg-gray-800 text-white px-1 rounded">
+        <span class=" text-white px-1 rounded">
           ${this.escapeHTML(thirdValue)}
         </span>
       </div>
     `;
   } 
 
-
-  buildThirdLine(cols: string[]): string {
+  buildThirdLine(stats: [string, string][]): string {
     return `
-      <div class="flex w-full text-sm font-medium px-1 text-center">
-        <span class="w-1/3 text-left bg-gray-800 text-white px-1 rounded">
-          ${cols[0]}
-        </span>
-        <span class="w-1/3 text-center bg-gray-800 text-white px-1 rounded">
-          ${cols[1]}
-        </span>
-        <span class="w-1/3 text-right bg-gray-800 text-white px-1 rounded">
-          ${cols[2]}
-        </span>
+      <div class="flex w-full text-sm font-medium px-1 gap-1">
+        <div class="w-1/3 flex flex-col items-start  text-white px-1 rounded">
+          <div class="truncate">${stats[0][0]}</div>
+          <div class="truncate">${stats[0][1]}</div>
+        </div>
+        <div class="w-1/3 flex flex-col items-center  text-white px-1 rounded">
+          <div class="truncate">${stats[1][0]}</div>
+          <div class="truncate">${stats[1][1]}</div>
+        </div>
+        <div class="w-1/3 flex flex-col items-end  text-white px-1 rounded">
+          <div class="truncate">${stats[2][0]}</div>
+          <div class="truncate">${stats[2][1]}</div>
+        </div>
       </div>
     `;
   }
+
+
+  // buildThirdLine(cols: string[]): string {
+  //   return `
+  //     <div class="flex w-full text-sm font-medium px-1">
+  //       <span class="w-1/3 text-left bg-gray-800 text-white px-1 rounded">
+  //         ${cols[0]}
+  //       </span>
+  //       <span class="w-1/3 text-center bg-gray-800 text-white px-1 rounded">
+  //         ${cols[1]}
+  //       </span>
+  //       <span class="w-1/3 text-right bg-gray-800 text-white px-1 rounded">
+  //         ${cols[2]}
+  //       </span>
+  //     </div>
+  //   `;
+  // }
 
 
   runasCardContent(data: any): string {
@@ -182,58 +201,95 @@ export class CardHtmlBuilderService {
   }
 
 
-  buildCardContent(data: any): string {
-    let firstLine: string;
-    let secondLine: string;
-    let thirdLine: string;
+  // buildCardContent(data: any): string {
+    
 
-    if (data.gameMode === "CHERRY") {
-      const csLabel = this.sanitizeImageTag(data.iconChampion, 'w-12 h-12', 'duoChampion');
-      firstLine = this.buildFirstLine(data, csLabel);
-      secondLine = this.buildSecondLine(data, `${data.timeCCingOthers}s CC`);
-      thirdLine = this.buildThirdLine([
-        `Damage <br> ${this.escapeHTML(data.totalDamageDealtToChampions?.toString())}`,
-        `DamagePM ${this.escapeHTML(data.damagePerMinute?.toString())}`,
-        `GoldPM ${this.escapeHTML(data.goldPerMinute?.toString())}`,
-      ]);
-    } else if (data.realRole === "sup") {
-      firstLine = this.buildFirstLine(data, `${data.totalMinionsKilled} CS`);
-      secondLine = this.buildSecondLine(data, `${data.timeCCingOthers}s CC`);
-      thirdLine = this.buildThirdLine([
-        `Damage <br> ${this.escapeHTML(data.totalDamageDealtToChampions?.toString())}`,
-        `VisionScore <br> ${this.escapeHTML(data.visionScore?.toString())}`,
-        `GoldPM ${this.escapeHTML(data.goldPerMinute?.toString())}`,
-      ]);
-    } else if (data.realRole === "jungle") {
-      firstLine = this.buildFirstLine(data, `${data.totalMinionsKilledJg} CS`);
-      secondLine = this.buildSecondLine(data, `${data.minionsPerMinuteJg} CSPM`);
-      thirdLine = this.buildThirdLine([
-        `Damage <br> ${this.escapeHTML(data.totalDamageDealtToChampions?.toString())}`,
-        `DamagePM ${this.escapeHTML(data.damagePerMinute?.toString())}`,
-        `GoldPM ${this.escapeHTML(data.goldPerMinute?.toString())}`,
-      ]);
-    } else {
-      firstLine = this.buildFirstLine(data, `${data.totalMinionsKilled} CS`);
-      secondLine = this.buildSecondLine(data, `${data.minionsPerMinute} CSPM`);
-      thirdLine = this.buildThirdLine([
-        `Damage <br> ${this.escapeHTML(data.totalDamageDealtToChampions?.toString())}`,
-        `DamagePM ${this.escapeHTML(data.damagePerMinute?.toString())}`,
-        `GoldPM ${this.escapeHTML(data.goldPerMinute?.toString())}`,
-      ]);
-    }
+  //   // const profile: PlayerProfile =
+  //   // data.gameMode === "CHERRY"
+  //   //   ? "CHERRY"
+  //   //   : data.realRole === "sup"
+  //   //   ? "sup"
+  //   //   : data.realRole === "jungle"
+  //   //   ? "jungle"
+  //   //   : "default";
 
-    return [firstLine, secondLine, thirdLine].join('');
-  }
+  //   // const layout = statLayout[profile];
+
+  //   // const firstLine = this.buildFirstLine(data, layout.getCsLabel(data));
+  //   // const secondLine = this.buildSecondLine(data, layout.secondStat(data));
+  //   // const thirdLine = this.buildThirdLine(layout.thirdLine(data));
+
+  //   // return [firstLine, secondLine, thirdLine].join('');
+  // }
 
   buildCardBlocksSanitized(data: any): {
-    stats: SafeHtml;
+    firstLine: SafeHtml;
+    secondLine: SafeHtml;
+    thirdLine: [string, string][];
     runas: SafeHtml;
     spells: SafeHtml;
     items: SafeHtml;
     achievements: SafeHtml;
   } {
+    type PlayerProfile = "CHERRY" | "sup" | "jungle" | "default";
+
+    const statLayout: Record<PlayerProfile, {
+      getCsLabel: (data: any) => string;
+      secondStat: (data: any) => string;
+      thirdLine: (data: any) => [string, string][];
+    }> = {
+      CHERRY: {
+        getCsLabel: data => this.sanitizeImageTag(data.iconChampion, 'w-12 h-12', 'duoChampion'),
+        secondStat: data => `${data.timeCCingOthers}s CC`,
+        thirdLine: data => [
+          ['Damage', this.escapeHTML(data.totalDamageDealtToChampions?.toString())],
+          ['DamagePM', this.escapeHTML(data.damagePerMinute?.toString())],
+          ['GoldPM', this.escapeHTML(data.goldPerMinute?.toString())],
+        ]
+      },
+      sup: {
+        getCsLabel: data => `${data.totalMinionsKilled} CS`,
+        secondStat: data => `${data.timeCCingOthers}s CC`,
+        thirdLine: data => [
+          ['Damage', this.escapeHTML(data.totalDamageDealtToChampions?.toString())],
+          ['VisionScore', this.escapeHTML(data.visionScore?.toString())],
+          ['GoldPM', this.escapeHTML(data.goldPerMinute?.toString())],
+        ]
+      },
+      jungle: {
+        getCsLabel: data => `${data.totalMinionsKilledJg} CS`,
+        secondStat: data => `${data.minionsPerMinuteJg} CSPM`,
+        thirdLine: data => [
+            ['Damage', this.escapeHTML(data.totalDamageDealtToChampions?.toString())],
+            ['DamagePM', this.escapeHTML(data.damagePerMinute?.toString())],
+            ['GoldPM', this.escapeHTML(data.goldPerMinute?.toString())],
+        ]
+      },
+      default: {
+        getCsLabel: data => `${data.totalMinionsKilled} CS`,
+        secondStat: data => `${data.minionsPerMinute} CSPM`,
+        thirdLine: data => [
+          ['Damage', this.escapeHTML(data.totalDamageDealtToChampions?.toString())],
+          ['DamagePM', this.escapeHTML(data.damagePerMinute?.toString())],
+          ['GoldPM', this.escapeHTML(data.goldPerMinute?.toString())],
+        ]
+      }
+    };
+    const profile: PlayerProfile =
+    data.gameMode === "CHERRY"
+      ? "CHERRY"
+      : data.realRole === "sup"
+      ? "sup"
+      : data.realRole === "jungle"
+      ? "jungle"
+      : "default";
+
+    const layout = statLayout[profile];
+
     return {
-      stats: this.sanitizer.bypassSecurityTrustHtml(this.buildCardContent(data)),
+      firstLine: this.sanitizer.bypassSecurityTrustHtml(this.buildFirstLine(data, layout.getCsLabel(data))),
+      secondLine: this.sanitizer.bypassSecurityTrustHtml(this.buildSecondLine(data, layout.secondStat(data))),
+      thirdLine: layout.thirdLine(data),
       runas: this.sanitizer.bypassSecurityTrustHtml(this.runasCardContent(data)),
       spells: this.sanitizer.bypassSecurityTrustHtml(this.spellsCardContent(data)),
       items: this.sanitizer.bypassSecurityTrustHtml(this.itemsCardContent(data)),
@@ -241,9 +297,9 @@ export class CardHtmlBuilderService {
     };
   }
 
-  buildFullCardSanitized(data: any): SafeHtml {
-    const content = this.buildCardContent(data);
-    return this.sanitizer.bypassSecurityTrustHtml(content);
-  }
+  // buildFullCardSanitized(data: any): SafeHtml {
+  //   const content = this.buildCardBlocksSanitized(data);
+  //   return this.sanitizer.bypassSecurityTrustHtml(content);
+  // }
 
 }

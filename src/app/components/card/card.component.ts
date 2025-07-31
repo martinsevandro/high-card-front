@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core'; 
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core'; 
 import { CardHtmlBuilderService } from '../../services/card-html-builder.service';
 import { SafeHtml } from '@angular/platform-browser';
+import VanillaTilt from 'vanilla-tilt';
 
 
 @Component({
@@ -9,10 +10,13 @@ import { SafeHtml } from '@angular/platform-browser';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, AfterViewInit {
   @Input() card: any; 
+
+  @ViewChild('cardRoot') cardRoot!: ElementRef;
  
   flipped = false;
+  rotationDirection: 'left' | 'right' = 'right';
 
   sanitizedFirstLine: SafeHtml = '';
   sanitizedSecondLine: SafeHtml = '';
@@ -35,5 +39,22 @@ export class CardComponent implements OnInit {
     this.sanitizedItems = blocks.items;
     this.sanitizedAchievements = blocks.achievements;
   }  
+
+  ngAfterViewInit(): void {
+    VanillaTilt.init(this.cardRoot.nativeElement, {
+      max: 2,
+      speed: 100,
+      reverse: true,
+    });
+  }
+
+  toggleFlip(event: MouseEvent) {
+    const cardRect = (event.currentTarget as HTMLElement).getBoundingClientRect(); 
+    const clickX = event.clientX - cardRect.left;
+
+    this.rotationDirection = clickX < cardRect.width / 2 ? 'left' : 'right';
+
+    this.flipped = !this.flipped;
+  }
 
 }

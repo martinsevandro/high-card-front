@@ -44,7 +44,6 @@ export class CardHtmlBuilderService {
     `;
   }
 
-
   buildSecondLine(data: any, thirdValue: string): string {
     return `
       <div class="flex justify-between text-sm font-medium text-center p-0"> 
@@ -78,25 +77,7 @@ export class CardHtmlBuilderService {
         </div>
       </div>
     `;
-  }
-
-
-  // buildThirdLine(cols: string[]): string {
-  //   return `
-  //     <div class="flex w-full text-sm font-medium px-1">
-  //       <span class="w-1/3 text-left bg-gray-800 text-white px-1 rounded">
-  //         ${cols[0]}
-  //       </span>
-  //       <span class="w-1/3 text-center bg-gray-800 text-white px-1 rounded">
-  //         ${cols[1]}
-  //       </span>
-  //       <span class="w-1/3 text-right bg-gray-800 text-white px-1 rounded">
-  //         ${cols[2]}
-  //       </span>
-  //     </div>
-  //   `;
-  // }
-
+  } 
 
   runasCardContent(data: any): string {
     if (data.gameMode === "CHERRY") {
@@ -130,7 +111,6 @@ export class CardHtmlBuilderService {
     `;
 
   }
-
 
   spellsCardContent(data: any): string {
     const spells = [
@@ -199,28 +179,7 @@ export class CardHtmlBuilderService {
 
     return achievements.join('\n');
   }
-
-
-  // buildCardContent(data: any): string {
-    
-
-  //   // const profile: PlayerProfile =
-  //   // data.gameMode === "CHERRY"
-  //   //   ? "CHERRY"
-  //   //   : data.realRole === "sup"
-  //   //   ? "sup"
-  //   //   : data.realRole === "jungle"
-  //   //   ? "jungle"
-  //   //   : "default";
-
-  //   // const layout = statLayout[profile];
-
-  //   // const firstLine = this.buildFirstLine(data, layout.getCsLabel(data));
-  //   // const secondLine = this.buildSecondLine(data, layout.secondStat(data));
-  //   // const thirdLine = this.buildThirdLine(layout.thirdLine(data));
-
-  //   // return [firstLine, secondLine, thirdLine].join('');
-  // }
+ 
 
   buildCardBlocksSanitized(data: any): {
     firstLine: SafeHtml;
@@ -295,11 +254,6 @@ export class CardHtmlBuilderService {
       items: this.sanitizer.bypassSecurityTrustHtml(this.itemsCardContent(data)),
       achievements: this.sanitizer.bypassSecurityTrustHtml(this.achievementsContent(data))
     };
-  }
-
-  // buildFullCardSanitized(data: any): SafeHtml {
-  //   const content = this.buildCardBlocksSanitized(data);
-  //   return this.sanitizer.bypassSecurityTrustHtml(content);
-  // }
+  } 
 
 }

@@ -1,6 +1,6 @@
 <div class="flex justify-center items-center mt-10  w-full">
   <div *ngIf="card; else noCard">
-    <app-card [card]="card"></app-card>
+    <app-card [card]="card" (cardElementReady)="handleCardReady($event)"></app-card>
   </div>
 
   <ng-template #noCard>

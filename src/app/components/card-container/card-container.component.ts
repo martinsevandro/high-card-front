@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../models/card.model';
 
 @Component({
@@ -9,4 +9,11 @@ import { Card } from '../../models/card.model';
 })
 export class CardContainerComponent {
   @Input() card: Card | null = null;
+  @Output() cardElementReady = new EventEmitter<HTMLElement>();
+
+   
+  handleCardReady(cardElement: HTMLElement): void { 
+    this.cardElementReady.emit(cardElement);
+  }
+
 }

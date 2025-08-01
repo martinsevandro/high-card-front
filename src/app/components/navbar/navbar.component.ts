@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RiotService } from '../../services/riot.service';
 import { Card } from '../../models/card.model';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ export class NavbarComponent {
   server: string = 'br1';  
   matchId: string = '';
 
+  @Input() cardElement!: HTMLElement;
   @Output() cardLoaded = new EventEmitter<Card>();
 
   constructor(private riotService: RiotService) {}
@@ -40,4 +42,46 @@ export class NavbarComponent {
       console.error('Erro ao buscar dados da carta:', error);
     }
   }
+
+  salvarImagem(): void {
+    
+    console.log('Botão de salvar clicado'); 
+    if (!this.cardElement) {
+      console.warn('Carta não encontrada!');
+      return;
+    }
+
+    const inner = this.cardElement.querySelector('.flip-inner');
+    if (!inner) return;
+    
+    const back = this.cardElement.querySelector('.flip-back');
+    if (!back) return;
+
+    const isFlipped = inner?.classList.contains('rotate-y-180');
+ 
+    inner?.classList.remove('rotate-y-180');
+    inner && ((inner as HTMLElement).style.transform = 'none');
+    back && ((back as HTMLElement).style.visibility = 'hidden');
+     
+ 
+    setTimeout(() => {
+      html2canvas(this.cardElement!, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+      }).then(canvas => { 
+        if (isFlipped) {
+          inner?.classList.add('rotate-y-180');
+          inner && ((inner as HTMLElement).style.transform = '');
+        }
+        back && ((back as HTMLElement).style.visibility = '');
+ 
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'carta-jogador.png';
+        a.click();
+      });
+    }, 500);
+  }
+  
 }

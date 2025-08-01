@@ -62,7 +62,7 @@ export class CardHtmlBuilderService {
 
   buildThirdLine(stats: [string, string][]): string {
     return `
-      <div class="flex w-full text-sm font-medium px-1 gap-1">
+      <div class="flex w-full text-sm font-medium px-1 gap-1 pb-2">
         <div class="w-1/3 flex flex-col items-start  text-white px-1 rounded">
           <div class="truncate">${stats[0][0]}</div>
           <div class="truncate">${stats[0][1]}</div>

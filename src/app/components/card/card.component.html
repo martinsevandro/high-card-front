@@ -1,4 +1,4 @@
-<div class="carta w-[308px] h-[560px] relative perspective" (click)="toggleFlip($event)" #cardRoot>
+<div class="player-card carta w-[308px] h-[560px] relative perspective" (click)="toggleFlip($event)" #cardRoot>
   <div class="flip-inner relative w-full h-full transition-transform duration-500 ease-linear"
     [ngStyle]="{ 
       transform: flipped ? (rotationDirection === 'right' ? 'rotateY(180deg)' : 'rotateY(-180deg)') : 'rotateY(0deg)'
@@ -6,7 +6,7 @@
 
     <!-- Frente -->
     <div
-      class="flip-front relative w-full h-full rounded-none overflow-hidden shadow-lg border-4"
+      class="flip-front relative w-full h-full rounded-none overflow-hidden shadow-lg border-4 "
       [ngStyle]="{ 'border': '4px solid ' + card.corDaBorda }"
     >
       <img
@@ -40,7 +40,7 @@
         <div [innerHTML]="sanitizedFirstLine" class="card-stats-text"></div>
         <div [innerHTML]="sanitizedSecondLine" class="card-stats-text"></div>
 
-        <div class="flex w-full text-sm font-medium px-1 gap-1 card-stats-text">
+        <div class="flex w-full text-sm font-medium px-1 gap-1 card-stats-text leading-[1.8rem] min-h-[2.4rem] overflow-visible">
           <div *ngFor="let stat of sanitizedThirdLine; let i = index"
               [ngClass]="{
                 'items-start': i === 0,

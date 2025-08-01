@@ -1,2 +1,21 @@
-<app-navbar (cardLoaded)="onCardLoaded($event)"></app-navbar>
-<app-card-container [card]="selectedCard"></app-card-container>
+<!-- <app-navbar (cardLoaded)="onCardLoaded($event)"></app-navbar>
+<app-card-container [card]="selectedCard"></app-card-container> -->
+
+<!-- <app-navbar
+  (cardLoaded)="onCardLoaded($event)"
+  [cardElement]="cardElement"
+></app-navbar>
+
+<app-card-container
+  *ngIf="selectedCard"
+  [card]="selectedCard"
+  (cardElementReady)="onCardElementReady($event)"
+></app-card-container> -->
+
+
+<!-- <app-navbar [cardElement]="cardElement"></app-navbar>
+<app-card-container [card]="selectedCard" (cardElementReady)="onCardElementReady($event)"></app-card-container> -->
+
+
+<app-navbar (cardLoaded)="onCardLoaded($event)" [cardElement]="cardElement"></app-navbar>
+<app-card-container [card]="selectedCard" (cardElementReady)="onCardElementReady($event)"></app-card-container>

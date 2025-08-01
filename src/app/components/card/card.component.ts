@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core'; 
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core'; 
 import { CardHtmlBuilderService } from '../../services/card-html-builder.service';
 import { SafeHtml } from '@angular/platform-browser';
 import VanillaTilt from 'vanilla-tilt';
@@ -40,13 +40,18 @@ export class CardComponent implements OnInit, AfterViewInit {
     this.sanitizedAchievements = blocks.achievements;
   }  
 
+  @Output() cardElementReady = new EventEmitter<HTMLElement>();
+
   ngAfterViewInit(): void {
     VanillaTilt.init(this.cardRoot.nativeElement, {
       max: 2,
       speed: 100,
       reverse: true,
     });
+    
+    this.cardElementReady.emit(this.cardRoot.nativeElement);
   }
+
 
   toggleFlip(event: MouseEvent) {
     const cardRect = (event.currentTarget as HTMLElement).getBoundingClientRect(); 

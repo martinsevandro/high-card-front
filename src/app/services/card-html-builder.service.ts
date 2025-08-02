@@ -256,7 +256,7 @@ export class CardHtmlBuilderService {
 
     const layout = statLayout[profile];
 
-    if(profile === "URF") data.killParticipation = '';
+    if(profile === "URF") data.killParticipation = '42';
 
     return {
       firstLine: this.sanitizer.bypassSecurityTrustHtml(this.buildFirstLine(data, layout.getCsLabel(data))),

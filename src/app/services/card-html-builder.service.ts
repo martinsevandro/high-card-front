@@ -190,7 +190,7 @@ export class CardHtmlBuilderService {
     items: SafeHtml;
     achievements: SafeHtml;
   } {
-    type PlayerProfile = "CHERRY" | "sup" | "jungle" | "default";
+    type PlayerProfile = "CHERRY" | "URF" | "sup" | "jungle" | "default";
 
     const statLayout: Record<PlayerProfile, {
       getCsLabel: (data: any) => string;
@@ -204,6 +204,15 @@ export class CardHtmlBuilderService {
           ['Damage', this.escapeHTML(data.totalDamageDealtToChampions?.toString())],
           ['DamagePM', this.escapeHTML(data.damagePerMinute?.toString())],
           ['GoldPM', this.escapeHTML(data.goldPerMinute?.toString())],
+        ]
+      },
+      URF: {
+        getCsLabel: data => `${data.totalMinionsKilled} CS`,
+        secondStat: data => `${data.timeCCingOthers}s CC`,
+        thirdLine: data => [
+          ['Damage', this.escapeHTML(data.totalDamageDealtToChampions?.toString())],
+          ['DmgTaken', this.escapeHTML(data.totalDamageTaken?.toString())],
+          ['Heals', this.escapeHTML(data.totalHealsOnTeammates?.toString())],
         ]
       },
       sup: {
@@ -237,6 +246,8 @@ export class CardHtmlBuilderService {
     const profile: PlayerProfile =
     data.gameMode === "CHERRY"
       ? "CHERRY"
+      : data.gameMode === "URF"
+      ? "URF"
       : data.realRole === "sup"
       ? "sup"
       : data.realRole === "jungle"
@@ -244,6 +255,8 @@ export class CardHtmlBuilderService {
       : "default";
 
     const layout = statLayout[profile];
+
+    if(profile === "URF") data.killParticipation = '';
 
     return {
       firstLine: this.sanitizer.bypassSecurityTrustHtml(this.buildFirstLine(data, layout.getCsLabel(data))),

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core'; 
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core'; 
 import { CardHtmlBuilderService } from '../../services/card-html-builder.service';
 import { SafeHtml } from '@angular/platform-browser';
 import VanillaTilt from 'vanilla-tilt';
@@ -10,7 +10,7 @@ import VanillaTilt from 'vanilla-tilt';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit, AfterViewInit {
+export class CardComponent implements AfterViewInit, OnChanges {
   @Input() card: any; 
 
   @ViewChild('cardRoot') cardRoot!: ElementRef;
@@ -28,19 +28,21 @@ export class CardComponent implements OnInit, AfterViewInit {
 
   constructor(private cardHtmlBuilder: CardHtmlBuilderService) {} 
 
-  ngOnInit() {
-    const blocks = this.cardHtmlBuilder.buildCardBlocksSanitized(this.card); 
-
-    this.sanitizedFirstLine = blocks.firstLine;
-    this.sanitizedSecondLine = blocks.secondLine;
-    this.sanitizedThirdLine = blocks.thirdLine;
-    this.sanitizedRunas = blocks.runas;
-    this.sanitizedSpells = blocks.spells;
-    this.sanitizedItems = blocks.items;
-    this.sanitizedAchievements = blocks.achievements;
-  }  
-
   @Output() cardElementReady = new EventEmitter<HTMLElement>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['card'] && this.card) {
+      const blocks = this.cardHtmlBuilder.buildCardBlocksSanitized(this.card); 
+
+      this.sanitizedFirstLine = blocks.firstLine;
+      this.sanitizedSecondLine = blocks.secondLine;
+      this.sanitizedThirdLine = blocks.thirdLine;
+      this.sanitizedRunas = blocks.runas;
+      this.sanitizedSpells = blocks.spells;
+      this.sanitizedItems = blocks.items;
+      this.sanitizedAchievements = blocks.achievements;
+    }
+  }  
 
   ngAfterViewInit(): void {
     VanillaTilt.init(this.cardRoot.nativeElement, {

@@ -1,16 +1,37 @@
-<form (ngSubmit)="buscarCarta()" id="search-form" class="w-full max-w-3xl flex flex-col lg:flex-row lg:gap-4 gap-2 justify-center items-center">
-  <input [(ngModel)]="name" name="name" required placeholder="name" class="w-[248px] sm:w-[384px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800" />
-  <input [(ngModel)]="tag" name="tag" required placeholder="Tagline" class="w-[248px] sm:w-[384px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800"/>
-  <select [(ngModel)]="server" name="server" required class="w-[248px] sm:w-[384px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800">
-    <option value="br1">BR</option>
-    <option value="na1">NA</option>
-    <option value="euw1">EUW</option>
-    <option value="eun1">EUNE</option>
-    <option value="kr1">KR</option>
-    <option value="jp1">JP</option>
-  </select>
-  <input [(ngModel)]="matchId" name="matchId" placeholder="Match ID (opcional)" class="w-[248px] sm:w-[384px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800"/>
-  
-  <button type="submit" class="p-2 rounded-md bg-gray-700 hover:bg-gray-800 text-white font-bold flex-1 max-w-[120px]">Buscar</button>
-  <button type="button" (click)="salvarImagem()" [disabled]="!cardElement" class="p-2 rounded-md bg-gray-700 hover:bg-gray-800 text-white font-bold flex-1 max-w-[120px]">Baixar</button>
-</form>
+<nav class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-gray-800 text-white px-4 py-2 gap-2 lg:gap-8 rounded-md"> 
+  <div class="flex flex-wrap gap-4">
+    <a routerLink="/" routerLinkActive="font-bold">Home</a>
+    <a *ngIf="isAuthenticated()" routerLink="/deck" routerLinkActive="font-bold">Deck</a>
+    <a *ngIf="isAuthenticated()" routerLink="/duel" routerLinkActive="font-bold">Duelo</a>
+    <a *ngIf="!isAuthenticated()" routerLink="/login">Login</a>
+    <a *ngIf="!isAuthenticated()" routerLink="/register">Registrar</a>
+    <a *ngIf="isAuthenticated()" (click)="logout()" class="cursor-pointer">Sair</a>
+  </div>
+ 
+  <form (ngSubmit)="buscarCarta()" class="flex flex-wrap gap-2 items-end justify-end">
+    <input [(ngModel)]="name" name="name" required placeholder="name"
+      class="w-[180px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600" />
+
+    <input [(ngModel)]="tag" name="tag" required placeholder="Tagline"
+      class="w-[140px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600" />
+
+    <select [(ngModel)]="server" name="server" required
+      class="w-[100px] p-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600">
+      <option value="br1">BR</option>
+      <option value="na1">NA</option>
+      <option value="euw1">EUW</option>
+      <option value="eun1">EUNE</option>
+      <option value="kr1">KR</option>
+      <option value="jp1">JP</option>
+    </select>
+
+    <input [(ngModel)]="matchId" name="matchId" placeholder="Match ID (opcional)"
+      class="w-[180px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600" />
+
+    <button type="submit"
+      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold">Buscar</button>
+
+    <button type="button" (click)="salvarImagem()" [disabled]="!cardElement"
+      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold disabled:opacity-50">Baixar</button>
+  </form>
+</nav>

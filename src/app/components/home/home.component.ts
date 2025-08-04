@@ -1,37 +1,27 @@
-// import { Component } from '@angular/core';
-// import { Card } from '../../models/card.model';
-
-// @Component({
-//   selector: 'app-home',
-//   standalone: false,
-//   templateUrl: './home.component.html',
-// })
-// export class HomeComponent {
-//   selectedCard: Card | null = null;
-
-//   onCardLoaded(card: Card): void {
-//     this.selectedCard = card;
-//   }
-// }
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Card } from '../../models/card.model';
+import { CardStateService } from '../../services/card-state.service';
 
 @Component({
   selector: 'app-home',
   standalone: false,
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   selectedCard: Card | null = null;
   cardElement!: HTMLElement;
 
-  onCardLoaded(card: Card): void {
-    this.selectedCard = card;
-  }
+  constructor(private cardState: CardStateService) {}
 
-  onCardElementReady(element: HTMLElement): void {
-    setTimeout(() => {
-      this.cardElement = element;
+  ngOnInit(): void {
+    this.cardState.card$.subscribe(card => {
+      this.selectedCard = card;
+    });
+
+    this.cardState.cardElement$.subscribe(element => {
+      if (element) {
+        this.cardElement = element;
+      }
     });
   }
 }

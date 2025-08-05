@@ -1,22 +1,47 @@
-<nav class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-gray-800 text-white px-4 py-2 gap-2 lg:gap-8 rounded-md"> 
+<nav
+  class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-gray-800 text-white px-4 py-2 gap-2 lg:gap-8 rounded-md"
+>
   <div class="flex flex-wrap gap-4">
     <a routerLink="/" routerLinkActive="font-bold">Home</a>
-    <a *ngIf="isAuthenticated()" routerLink="/deck" routerLinkActive="font-bold">Deck</a>
-    <a *ngIf="isAuthenticated()" routerLink="/duel" routerLinkActive="font-bold">Duelo</a>
+    <a *ngIf="isAuthenticated()" routerLink="/deck" routerLinkActive="font-bold"
+      >Deck</a
+    >
+    <a *ngIf="isAuthenticated()" routerLink="/duel" routerLinkActive="font-bold"
+      >Duelo</a
+    >
     <a *ngIf="!isAuthenticated()" routerLink="/login">Login</a>
     <a *ngIf="!isAuthenticated()" routerLink="/register">Registrar</a>
-    <a *ngIf="isAuthenticated()" (click)="logout()" class="cursor-pointer">Sair</a>
+    <a *ngIf="isAuthenticated()" (click)="logout()" class="cursor-pointer"
+      >Sair</a
+    >
   </div>
- 
-  <form (ngSubmit)="buscarCarta()" class="flex flex-wrap gap-2 items-end justify-end">
-    <input [(ngModel)]="name" name="name" required placeholder="name"
-      class="w-[180px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600" />
 
-    <input [(ngModel)]="tag" name="tag" required placeholder="Tagline"
-      class="w-[140px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600" />
+  <form
+    (ngSubmit)="buscarCarta()"
+    class="flex flex-wrap gap-2 items-end justify-end"
+  >
+    <input
+      [(ngModel)]="name"
+      name="name"
+      required
+      placeholder="Riot ID"
+      class="w-[180px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600"
+    />
 
-    <select [(ngModel)]="server" name="server" required
-      class="w-[100px] p-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600">
+    <input
+      [(ngModel)]="tag"
+      name="tag"
+      required
+      placeholder="Tagline"
+      class="w-[140px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600"
+    />
+
+    <select
+      [(ngModel)]="server"
+      name="server"
+      required
+      class="w-[80px] min-h-[41px] p-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600"
+    >
       <option value="br1">BR</option>
       <option value="na1">NA</option>
       <option value="euw1">EUW</option>
@@ -25,13 +50,28 @@
       <option value="jp1">JP</option>
     </select>
 
-    <input [(ngModel)]="matchId" name="matchId" placeholder="Match ID (opcional)"
-      class="w-[180px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600" />
+    <input
+      [(ngModel)]="matchId"
+      name="matchId"
+      placeholder="Match ID (opcional)"
+      class="w-[180px] p-2 rounded-md bg-gray-800 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600"
+    />
 
-    <button type="submit"
-      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold">Buscar</button>
+    <button
+      type="submit"
+      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold"
+      routerLink="/home"
+    >
+      Buscar
+    </button>
 
-    <button type="button" (click)="salvarImagem()" [disabled]="!cardElement"
-      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold disabled:opacity-50">Baixar</button>
+    <button
+      type="button"
+      (click)="salvarImagem()"
+      [disabled]="!cardElement"
+      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold disabled:opacity-50"
+    >
+      Baixar
+    </button>
   </form>
 </nav>

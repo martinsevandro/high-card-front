@@ -1,1 +1,68 @@
-<p>deck works!</p>
+<div class="p-4 flex flex-col items-center justify-center min-h-[80vh]">
+  <div *ngIf="loading" class="text-gray-600">Carregando...</div>
+  <div *ngIf="error" class="text-red-600">{{ error }}</div>
+
+  <div *ngIf="!loading && deck.length === 0" class="text-gray-500">
+    Nenhuma carta salva no deck.
+  </div>
+
+  <div *ngIf="deck.length > 0" class="flex items-center justify-center gap-4">
+    <div
+      class="hidden sm:block transform scale-90 opacity-60 cursor-pointer transition duration-300 hover:scale-95"
+      *ngIf="hasPrevious()"
+      (click)="selectPrevious()"
+    >
+      <app-card
+        [card]="deck[currentIndex - 1]"
+        [enableEffects]="false"
+      ></app-card>
+    </div>
+
+    <div class="transition duration-300">
+      <app-card [card]="deck[currentIndex]" [enableEffects]="true"></app-card>
+    </div>
+
+    <div
+      class="hidden sm:block transform scale-90 opacity-60 cursor-pointer transition duration-300 hover:scale-95"
+      *ngIf="hasNext()"
+      (click)="selectNext()"
+    >
+      <app-card
+        [card]="deck[currentIndex + 1]"
+        [enableEffects]="false"
+      ></app-card>
+    </div>
+  </div>
+
+  <div *ngIf="deck.length !== 0 && !loading">
+    <!-- mobile -->
+    <div class="mt-4 sm:hidden w-full flex justify-center">
+      <div class="flex items-center gap-6 text-white text-2xl">
+        <button
+          (click)="selectPrevious()"
+          [disabled]="!hasPrevious()"
+          class="disabled:opacity-30"
+        >
+          ‹
+        </button>
+
+        <span class="text-sm text-gray-400">
+          {{ currentIndex + 1 }} / {{ deck.length }}
+        </span>
+
+        <button
+          (click)="selectNext()"
+          [disabled]="!hasNext()"
+          class="disabled:opacity-30"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+
+    <!-- desktop -->
+    <div class="text-gray-500 mt-4 hidden sm:block">
+      <p class="text-sm">{{ currentIndex + 1 }} / {{ deck.length }}</p>
+    </div>
+  </div>
+</div>

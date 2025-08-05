@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -15,14 +15,13 @@ import { DeckComponent } from './components/deck/deck.component';
 import { DuelComponent } from './components/duel/duel.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { CardComponent } from './components/card/card.component'; 
+import { CardComponent } from './components/card/card.component';
 import { AuthGuard } from './guards/auth.guard';
-
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    CardContainerComponent, 
+    AppComponent,
+    CardContainerComponent,
     DeckComponent,
     DuelComponent,
     HomeComponent,
@@ -42,11 +41,10 @@ import { AuthGuard } from './guards/auth.guard';
       { path: 'login', component: LoginComponent },
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'deck', component: DeckComponent, canActivate: [AuthGuard] },
-      { path: 'duel', component: DuelComponent, canActivate: [AuthGuard] }
-    ])
-
+      { path: 'duel', component: DuelComponent, canActivate: [AuthGuard] },
+    ]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

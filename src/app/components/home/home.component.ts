@@ -14,11 +14,11 @@ export class HomeComponent implements OnInit {
   constructor(private cardState: CardStateService) {}
 
   ngOnInit(): void {
-    this.cardState.card$.subscribe(card => {
+    this.cardState.card$.subscribe((card) => {
       this.selectedCard = card;
     });
 
-    this.cardState.cardElement$.subscribe(element => {
+    this.cardState.cardElement$.subscribe((element) => {
       if (element) {
         this.cardElement = element;
       }

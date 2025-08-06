@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Card } from '../models/card.model';
+import { CreateCardDto } from '../components/card/card-create.dto';
 
 @Injectable({ providedIn: 'root' })
 export class CardsService {
@@ -19,9 +20,9 @@ export class CardsService {
     return this.http.get<Card[]>(`${this.API}/my-deck`, { headers });
   }
 
-  saveCard(cardData: any): Observable<Card> {
+  saveCard(cardData: CreateCardDto): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post<Card>(`${this.API}/save`, cardData, { headers });
+    return this.http.post<any>(`${this.API}/save`, cardData, { headers });
   }
 
   deleteCard(cardId: string): Observable<void> {

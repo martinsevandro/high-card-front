@@ -8,12 +8,15 @@ import {
 import { RiotService } from '../../services/riot.service';
 import { Card } from '../../models/card.model';
 import html2canvas from 'html2canvas';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { CardStateService } from '../../services/card-state.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
+
+import { CardsService } from '../../services/cards.service';
+import { CreateCardDto } from '../../components/card/card-create.dto';
 
 @Component({
   selector: 'app-navbar',
@@ -27,18 +30,34 @@ export class NavbarComponent implements OnInit, OnDestroy {
   matchId: string = '';
 
   cardElement!: HTMLElement;
+  cartaEsperada!: Card;
+
   @Output() cardLoaded = new EventEmitter<Card>();
 
   private destroy$ = new Subject<void>();
+  public currentRouter: string = '';
 
   constructor(
     private riotService: RiotService,
     public auth: AuthService,
     private router: Router,
-    private cardState: CardStateService
+    private cardState: CardStateService,
+    private cardsService: CardsService
   ) {}
 
   ngOnInit(): void {
+    this.router.events
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event) => {
+        this.currentRouter = event.urlAfterRedirects;
+        console.log('Rota atual:', this.currentRouter);
+      });
+
     this.cardState.cardElement$
       .pipe(takeUntil(this.destroy$))
       .subscribe((element) => {
@@ -86,6 +105,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
 
       if (card) {
+        this.cartaEsperada = card;
         this.cardLoaded.emit(card);
         this.cardState.setCard(card);
       } else {
@@ -138,5 +158,65 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       }, 500);
     }
+  }
+
+  curtirCarta(card: Card): void {
+    const dto: CreateCardDto = {
+      gameMode: card.gameMode,
+      championName: card.championName,
+      riotIdGameName: card.riotIdGameName,
+      riotIdTagline: card.riotIdTagline,
+      positionPlayer: card.positionPlayer,
+      role: card.role,
+      realRole: card.realRole,
+      kills: card.kills,
+      deaths: card.deaths,
+      assists: card.assists,
+      kda: card.kda,
+      killParticipation: card.killParticipation,
+      totalDamageDealtToChampions: card.totalDamageDealtToChampions,
+      totalMinionsKilled: card.totalMinionsKilled,
+      totalNeutralMinionsKilled: card.totalNeutralMinionsKilled,
+      totalMinionsKilledJg: card.totalMinionsKilledJg,
+      teamId: card.teamId,
+      teamDragonsKilled: card.teamDragonsKilled,
+      teamBaronsKilled: card.teamBaronsKilled,
+      matchDragons: card.matchDragons,
+      matchBarons: card.matchBarons,
+      jungleKing: card.jungleKing,
+      gameLength: card.gameLength,
+      damagePerMinute: card.damagePerMinute,
+      minionsPerMinute: card.minionsPerMinute,
+      minionsPerMinuteJg: card.minionsPerMinuteJg,
+      goldPerMinute: card.goldPerMinute,
+      timeCCingOthers: card.timeCCingOthers,
+      visionScore: card.visionScore,
+      firstBloodKill: card.firstBloodKill,
+      firstBloodAssist: card.firstBloodAssist,
+      firstTowerKill: card.firstTowerKill,
+      firstTowerAssist: card.firstTowerAssist,
+      totalDamageShieldedOnTeammates: card.totalDamageShieldedOnTeammates,
+      totalHealsOnTeammates: card.totalHealsOnTeammates,
+      totalDamageTaken: card.totalDamageTaken,
+      baronKills: card.baronKills,
+      dragonKills: card.dragonKills,
+      quadraKills: card.quadraKills,
+      pentaKills: card.pentaKills,
+      splashArt: card.splashArt,
+      iconChampion: card.iconChampion,
+      corDaBorda: card.corDaBorda,
+      corDoVerso: card.corDoVerso,
+      perks: card.perks,
+      summonerSpells: card.summonerSpells,
+      items: card.items,
+      augments: card.augments,
+      achievements: card.achievements,
+      gameDate: card.gameDate,
+    };
+
+    this.cardsService.saveCard(dto).subscribe({
+      next: () => console.log('Carta salva com sucesso'),
+      error: (err) => console.error('Erro ao salvar carta:', err),
+    });
   }
 }

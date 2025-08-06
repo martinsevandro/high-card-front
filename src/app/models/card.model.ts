@@ -1,4 +1,5 @@
 export interface Card {
+  _id: string;
   gameMode: string;
   championName: string;
   riotIdGameName: string;

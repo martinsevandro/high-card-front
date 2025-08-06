@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   server: string = 'br1';
   matchId: string = '';
 
-  cardElement!: HTMLElement;
+  cardElement!: HTMLElement | null;
   cartaEsperada!: Card;
 
   @Output() cardLoaded = new EventEmitter<Card>();
@@ -64,6 +64,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         console.log('Card element received:', element);
         this.cardElement = element as HTMLElement;
       });
+
+    this.cardState.card$.subscribe((card) => (this.cartaEsperada = card as Card));
   }
 
   ngOnDestroy(): void {
@@ -217,6 +219,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.cardsService.saveCard(dto).subscribe({
       next: () => console.log('Carta salva com sucesso'),
       error: (err) => console.error('Erro ao salvar carta:', err),
+    });
+  }
+
+  descurtirCarta(): void {
+    if (!this.cartaEsperada || !this.cartaEsperada._id) {
+      console.error('Nenhuma carta selecionada ou ID ausente.');
+      return;
+    }
+
+    this.cardsService.deleteCard(this.cartaEsperada._id).subscribe({
+      next: () => {
+        this.cardState.emitCardDeleted(this.cartaEsperada._id);
+        console.log('Carta removida com sucesso.');
+        this.router.navigate(['/deck']);
+      },
+      error: (err) => console.error('Erro ao remover carta:', err),
     });
   }
 }

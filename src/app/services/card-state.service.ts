@@ -12,6 +12,9 @@ export class CardStateService {
   private cardElementSource = new BehaviorSubject<HTMLElement | null>(null);
   cardElement$ = this.cardElementSource.asObservable();
 
+  private cardDeletedSource = new BehaviorSubject<string | null>(null);
+  cardDeleted$ = this.cardDeletedSource.asObservable();
+
   setCard(card: Card) {
     this.cardSource.next(card);
   }
@@ -19,4 +22,9 @@ export class CardStateService {
   setCardElement(element: HTMLElement) {
     this.cardElementSource.next(element);
   }
+
+  emitCardDeleted(cardId: string) { 
+    this.cardDeletedSource.next(cardId);
+  }
+  
 }

@@ -3,6 +3,8 @@ import { Card } from '../../models/card.model';
 import { CardsService } from '../../services/cards.service';
 import { AuthService } from '../../services/auth.service';
 
+import { CardStateService } from '../../services/card-state.service';
+
 @Component({
   selector: 'app-deck',
   standalone: false,
@@ -15,7 +17,8 @@ export class DeckComponent implements OnInit {
 
   constructor(
     private cardsService: CardsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cardState: CardStateService
   ) {}
 
   ngOnInit(): void {
@@ -29,11 +32,20 @@ export class DeckComponent implements OnInit {
       next: (cards: any) => {
         this.deck = cards;
         this.loading = false;
+        if (this.deck.length > 0) {
+          this.cardState.setCard(this.deck[0]);
+        }
       },
       error: (err) => {
         this.error = 'Erro ao carregar o deck.';
         this.loading = false;
       },
+    });
+
+    this.cardState.cardDeleted$.subscribe((cardId) => {
+      if (cardId) {
+        this.removeCardById(cardId);
+      }
     });
   }
 
@@ -50,12 +62,28 @@ export class DeckComponent implements OnInit {
   selectPrevious(): void {
     if (this.hasPrevious()) {
       this.currentIndex--;
+      this.cardState.setCard(this.deck[this.currentIndex]);
     }
   }
 
   selectNext(): void {
     if (this.hasNext()) {
       this.currentIndex++;
+      this.cardState.setCard(this.deck[this.currentIndex]);
+    }
+  }
+
+  removeCardById(cardId: string): void {
+    const index = this.deck.findIndex((card) => card._id === cardId);
+    if (index > -1) {
+      this.deck.splice(index, 1);
+
+      if (this.currentIndex >= this.deck.length) {
+        this.currentIndex = Math.max(0, this.deck.length - 1);
+      }
+
+      const newCard = this.deck[this.currentIndex] || null;
+      this.cardState.setCard(newCard);
     }
   }
 }

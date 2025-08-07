@@ -1,7 +1,7 @@
 <nav
   class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-gray-800 text-white px-4 py-2 gap-2 lg:gap-8 rounded-md"
 >
-  <ng-container *ngIf="currentRouter === '/' || currentRouter === '/deck'">
+  <ng-container *ngIf="currentRouter === '/'">
     <form
       (ngSubmit)="buscarCarta()"
       class="flex flex-wrap gap-2 items-end justify-end"
@@ -59,26 +59,26 @@
       >
         Baixar
       </button>
-
-      <button
-        type="button"
-        *ngIf="auth.isAuthenticated() && cardElement && currentRouter === '/'"
-        (click)="curtirCarta(cartaEsperada)"
-        class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
-      >
-        Vincular
-      </button>
-
-      <button
-        *ngIf="auth.isAuthenticated() && cartaEsperada && currentRouter === '/deck'"
-        (click)="descurtirCarta()"
-        type="button"
-        class="px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
-      >
-        Desvincular
-      </button>
     </form>
   </ng-container>
+
+  <button
+    type="button"
+    *ngIf="auth.isAuthenticated() && cardElement && currentRouter === '/'"
+    (click)="curtirCarta(cartaEsperada)"
+    class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
+  >
+    Vincular Carta
+  </button>
+
+  <button
+    *ngIf="auth.isAuthenticated() && cartaEsperada && currentRouter === '/deck'"
+    (click)="descurtirCarta()"
+    type="button"
+    class="px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
+  >
+    Desvincular Carta
+  </button>
 
   <div class="flex flex-wrap gap-4">
     <a routerLink="/" routerLinkActive="font-bold">Home</a>

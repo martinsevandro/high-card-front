@@ -62,23 +62,26 @@
     </form>
   </ng-container>
 
-  <button
-    type="button"
-    *ngIf="auth.isAuthenticated() && cardElement && currentRouter === '/'"
-    (click)="curtirCarta(cartaEsperada)"
-    class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
-  >
-    Vincular Carta
-  </button>
+  <ng-container *ngIf="isAuthenticated">
+    <button
+      type="button"
+      *ngIf="cardElement && currentRouter === '/'"
+      (click)="curtirCarta(cartaEsperada)"
+      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
+    >
+      Vincular Carta
+    </button>
 
-  <button
-    *ngIf="auth.isAuthenticated() && cartaEsperada && currentRouter === '/deck'"
-    (click)="descurtirCarta()"
-    type="button"
-    class="px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
-  >
-    Desvincular Carta
-  </button>
+    <button
+      *ngIf="cartaEsperada && currentRouter === '/deck'"
+      (click)="descurtirCarta()"
+      type="button"
+      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
+    >
+      Desvincular Carta
+    </button>
+ 
+  </ng-container>
 
   <div class="flex flex-wrap gap-4">
     <a routerLink="/" routerLinkActive="font-bold">Home</a>

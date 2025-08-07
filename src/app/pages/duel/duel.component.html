@@ -1,0 +1,73 @@
+<div class="p-6">
+  <!-- Status -->
+  <p class="text-xl font-semibold mb-4 bg-red-300">{{ statusMessage }}</p>
+
+  <!-- Dados da partida -->
+  <div *ngIf="inMatch" class="mb-4 bg-white">
+    <p>
+      Oponente: <strong>{{ opponent }}</strong>
+    </p>
+    <p>
+      Sala: <code>{{ roomId }}</code>
+    </p>
+  </div>
+
+  <!-- Botões de fila -->
+  <div *ngIf="!inMatch">
+    <button
+      *ngIf="!inQueue"
+      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      (click)="joinQueue()"
+    >
+      Entrar na fila
+    </button>
+
+    <button
+      *ngIf="inQueue"
+      class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+      (click)="leaveQueue()"
+    >
+      Sair da fila
+    </button>
+  </div>
+
+  <!-- Cartas disponíveis (durante o duelo) -->
+  <div *ngIf="inMatch" class="mt-6 bg-white">
+    <p class="font-bold mb-2">Suas cartas:</p>
+    <div class="">
+      <!-- Suas cartas para escolher -->
+      <div
+        *ngIf="currentDeck.length && !selectedCard"
+        class="flex flex-row gap-4 justify-center flex-wrap md:flex-nowrap"
+      >
+        <app-card
+          *ngFor="let card of currentDeck"
+          [card]="card"
+          (click)="playCard(card)"
+          class="cursor-pointer hover:scale-105 transition duration-200"
+        ></app-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultado da rodada -->
+  <div *ngIf="roundResult" class="mt-6">
+    <h3 class="text-lg font-semibold mb-2">Resultado da rodada:</h3>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+      <!-- Carta jogada por você -->
+      <div *ngIf="myCardPlayed" class="mt-4">
+        <h3>Sua carta jogada:</h3>
+        <app-card [card]="myCardPlayed"></app-card>
+      </div>
+
+      <!-- Carta do oponente -->
+      <div *ngIf="opponentCardPlayed" class="mt-4">
+        <h3>Carta do oponente:</h3>
+        <app-card [card]="opponentCardPlayed"></app-card>
+      </div>
+    </div>
+
+    <p class="mt-4 font-bold">Resultado:</p>
+  </div>
+</div>

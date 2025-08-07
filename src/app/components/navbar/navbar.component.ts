@@ -18,6 +18,8 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { CardsService } from '../../services/cards.service';
 import { CreateCardDto } from '../../components/card/card-create.dto';
 
+import { DuelComponent } from '../../pages/duel/duel.component';
+
 @Component({
   selector: 'app-navbar',
   standalone: false,

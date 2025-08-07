@@ -12,7 +12,7 @@ import { CardContainerComponent } from './components/card-container/card-contain
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { DeckComponent } from './components/deck/deck.component';
-import { DuelComponent } from './components/duel/duel.component';
+import { DuelComponent } from './pages/duel/duel.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CardComponent } from './components/card/card.component';
@@ -22,10 +22,10 @@ import { AuthGuard } from './guards/auth.guard';
   declarations: [
     AppComponent,
     CardContainerComponent,
-    DeckComponent,
-    DuelComponent,
+    DeckComponent, 
     HomeComponent,
     NavbarComponent,
+    DuelComponent,
     CardComponent,
     RegisterComponent,
     LoginComponent,

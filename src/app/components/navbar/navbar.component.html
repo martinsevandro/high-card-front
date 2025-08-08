@@ -96,5 +96,8 @@
     <a *ngIf="isAuthenticated()" (click)="logout()" class="cursor-pointer"
       >Sair</a
     >
+    <span *ngIf="isAuthenticated()" class=" text-gray-400 p-0 m-0">
+      Hi, I'm {{ nomeUsuario() }}!
+    </span>
   </div>
 </nav>

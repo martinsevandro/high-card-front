@@ -239,4 +239,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
       error: (err) => console.error('Erro ao remover carta:', err),
     });
   }
+
+  nomeUsuario(): string {
+    const username = this.auth.getUsername();
+    return username ? username : 'Usuário Desconhecido';
+  }
 }

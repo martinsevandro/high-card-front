@@ -45,4 +45,12 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
+  getUsername(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.username;
+  }
 }

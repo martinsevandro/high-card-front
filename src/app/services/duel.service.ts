@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Card } from '../models/card.model';
+
+export interface RoundResultPayload {
+  myCard: Card;
+  opponentCard: Card;
+  result: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class DuelService {
   private socket!: Socket;
+
+  private mySocketId?: string;
 
   statusMessage$ = new BehaviorSubject<string>('Desconectado');
   inQueue$ = new BehaviorSubject<boolean>(false);
@@ -17,6 +25,22 @@ export class DuelService {
   myCardPlayed$ = new BehaviorSubject<Card | null>(null);
   opponentCardPlayed$ = new BehaviorSubject<Card | null>(null);
   roundResult$ = new BehaviorSubject<string | null>(null);
+
+  private duelEndedSubject = new Subject<any>();
+  duelEnded$ = this.duelEndedSubject.asObservable();
+
+  private roundResultPayloadSubject =
+    new BehaviorSubject<RoundResultPayload | null>(null);
+  roundResultPayload$: Observable<RoundResultPayload | null> =
+    this.roundResultPayloadSubject.asObservable();
+
+  setRoundResultPayload(payload: RoundResultPayload) {
+    this.roundResultPayloadSubject.next(payload);
+  }
+
+  clearRoundResultPayload() {
+    this.roundResultPayloadSubject.next(null);
+  }
 
   constructor(private authService: AuthService) {}
 
@@ -37,6 +61,7 @@ export class DuelService {
   private setupSocketListeners(): void {
     this.socket.on('connect', () => {
       this.statusMessage$.next('Conectado');
+      this.mySocketId = this.socket.id;
     });
 
     this.socket.on('waiting_for_opponent', () => {
@@ -69,21 +94,21 @@ export class DuelService {
 
     this.socket.on('roundResult', (data) => {
       const selected = this.selectedCard$.value;
+      if (!selected) return;
+
+      const payload: RoundResultPayload = {
+        myCard: selected,
+        opponentCard: data.opponentCard,
+        result: data.result,
+      };
+
+      this.setRoundResultPayload(payload);
+
       this.myCardPlayed$.next(selected);
       this.opponentCardPlayed$.next(data.opponentCard);
       this.roundResult$.next(data.result);
-
-      switch (data.result) {
-        case 'win':
-          this.statusMessage$.next('Você venceu a rodada!');
-          break;
-        case 'lose':
-          this.statusMessage$.next('Você perdeu a rodada!');
-          break;
-        case 'draw':
-          this.statusMessage$.next('Empate na rodada!');
-          break;
-      }
+      console.log('Resultado da rodada recebido:', data.result);
+ 
     });
 
     this.socket.on('nextRound', (data) => {
@@ -96,21 +121,32 @@ export class DuelService {
     });
 
     this.socket.on('duelEnded', (data) => {
-      if (data.winnerSocketId === this.socket.id) {
-        this.statusMessage$.next('Você venceu o duelo!');
-      } else if (data.winnerSocketId === null) {
-        this.statusMessage$.next('O duelo terminou empatado!');
-      } else {
-        this.statusMessage$.next('Você perdeu o duelo!');
+      if (data.lastRound) {
+        const payload: RoundResultPayload = {
+          myCard: data.lastRound.myCard,
+          opponentCard: data.lastRound.opponentCard,
+          result: data.lastRound.result,
+        };
+
+        this.setRoundResultPayload(payload);
       }
 
+      //   if (data.finalResult) this.statusMessage$.next(data.finalResult);
+
       this.inMatch$.next(false);
-      this.inQueue$.next(false);
-      this.currentDeck$.next([]);
-      this.selectedCard$.next(null);
-      this.myCardPlayed$.next(null);
-      this.opponentCardPlayed$.next(null);
-      this.roundResult$.next(null);
+
+      let winner: 'me' | 'opponent' | 'draw' = 'draw';
+
+      if (data.winnerSocketId === this.mySocketId) {
+        winner = 'me';
+      } else if (data.winnerSocketId === null) {
+        winner = 'draw';
+      } else {
+        winner = 'opponent';
+      }
+
+      this.duelEndedSubject.next({ ...data, winner });
+      this.duelEndedSubject.next(data);
     });
 
     this.socket.on('error', (msg) => {

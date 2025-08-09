@@ -1,6 +1,13 @@
-<div class="p-6">
-  <p class="text-xl font-semibold mb-4 text-white">{{ statusMessage }}</p> 
+<p class="text-white">
+  DEBUG: inMatch={{ inMatch }}, roundPhase={{ roundPhase }}, deckSize={{
+    currentDeck.length
+  }}
+</p>
 
+<div class="p-6">
+  <p class="text-xl font-semibold mb-4 text-white">{{ statusMessage }}</p>
+
+  <!-- Quando não está em partida -->
   <div *ngIf="!inMatch">
     <button
       *ngIf="!inQueue"
@@ -19,13 +26,12 @@
     </button>
   </div>
 
-  <div *ngIf="inMatch" class="mt-6 ">
-    <p class="font-bold mb-2 text-white">Suas cartas:</p>
-    <div class="">
-      <div
-        *ngIf="currentDeck.length && !selectedCard"
-        class="flex flex-row gap-4 justify-center flex-wrap md:flex-nowrap"
-      >
+  <!-- Durante a partida -->
+  <div *ngIf="inMatch">
+    <!-- Fase de seleção -->
+    <div *ngIf="roundPhase === 'selection'" class="space-y-4">
+      <p class="text-white font-bold mb-2">Escolha uma carta:</p>
+      <div class="flex flex-row gap-4 justify-center flex-wrap md:flex-nowrap">
         <app-card
           *ngFor="let card of currentDeck"
           [card]="card"
@@ -34,23 +40,84 @@
         ></app-card>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="roundResult" class="mt-6">
-    <h3 class="text-lg font-semibold mb-2">Resultado da rodada:</h3>
-
-    <div class="flex flex-col sm:flex-row gap-4">
-      <div *ngIf="myCardPlayed" class="mt-4">
-        <h3>Sua carta jogada:</h3>
-        <app-card [card]="myCardPlayed"></app-card>
-      </div>
-
-      <div *ngIf="opponentCardPlayed" class="mt-4">
-        <h3>Carta do oponente:</h3>
-        <app-card [card]="opponentCardPlayed"></app-card>
-      </div>
+    <!-- Aguardando oponente -->
+    <div *ngIf="roundPhase === 'waiting'" class="space-y-4">
+      <p class="text-white">Aguardando o oponente jogar...</p>
+      <p class="text-white font-bold">Sua carta:</p>
+      <app-card [card]="selectedCard"></app-card>
     </div>
 
-    <p class="mt-4 font-bold">Resultado:</p>
+    <!-- Resultado da rodada (Tailwind) -->
+    <div
+      *ngIf="
+        roundPhase === 'result' && (roundHistory.length > 0 || statusMessage)
+      "
+      class="space-y-6"
+    >
+      <div *ngIf="lastRound() as lr" class="flex flex-col items-center">
+        <div
+          class="flex flex-col md:flex-row items-stretch justify-center gap-16 w-full"
+        >
+          <!-- Sua carta -->
+          <div class="flex-1 flex flex-col items-center">
+            <div class="text-sm text-gray-300 mb-2">Você</div>
+            <div class="w-64">
+              <app-card [card]="lr.myCard"></app-card>
+            </div>
+          </div>
+
+          <!-- Carta do oponente -->
+          <div class="flex-1 flex flex-col items-center">
+            <div class="text-sm text-gray-300 mb-2">
+              {{ opponent || "Oponente" }}
+            </div>
+            <div class="w-64">
+              <app-card [card]="lr.opponentCard"></app-card>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensagem de resultado -->
+        <p class="text-white mt-4 text-center font-semibold">
+          {{ lr.result || statusMessage }}
+        </p>
+
+        <!-- Botões -->
+        <div class="flex justify-center gap-4 mt-4">
+          <button
+            *ngIf="!duelFinished"
+            type="button"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            (click)="startNextRound()"
+          >
+            Próxima rodada
+          </button>
+
+          <button
+            *ngIf="duelFinished && roundPhase === 'result'"
+            type="button"
+            class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"
+            (click)="finalizeStats()"
+          >
+            Encerrar estatísticas
+          </button>
+        </div>
+      </div>
+
+      <!-- Se ainda não houver lastRound, mostra só a mensagem -->
+      <div *ngIf="!lastRound() && statusMessage" class="text-center text-white">
+        <p>{{ statusMessage }}</p>
+        <div class="flex justify-center mt-4">
+          <button
+            *ngIf="duelFinished"
+            class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"
+            (click)="finalizeStats()"
+          >
+            Encerrar estatísticas
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

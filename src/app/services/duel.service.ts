@@ -107,6 +107,8 @@ export class DuelService {
       this.myCardPlayed$.next(selected);
       this.opponentCardPlayed$.next(data.opponentCard);
       this.roundResult$.next(data.result);
+      
+      this.statusMessage$.next('Resultado da rodada anterior recebido:');
       console.log('Resultado da rodada recebido:', data.result);
  
     });
@@ -117,7 +119,7 @@ export class DuelService {
       this.myCardPlayed$.next(null);
       this.opponentCardPlayed$.next(null);
       this.roundResult$.next(null);
-      this.statusMessage$.next('Nova rodada. Escolha sua carta.');
+      // this.statusMessage$.next('Nova rodada. Escolha sua carta.');
     });
 
     this.socket.on('duelEnded', (data) => {
@@ -145,8 +147,7 @@ export class DuelService {
         winner = 'opponent';
       }
 
-      this.duelEndedSubject.next({ ...data, winner });
-      this.duelEndedSubject.next(data);
+      this.duelEndedSubject.next({ ...data, winner }); 
     });
 
     this.socket.on('error', (msg) => {

@@ -8,7 +8,7 @@
   <p class="text-xl font-semibold mb-4 text-white">{{ statusMessage }}</p>
 
   <!-- Quando não está em partida -->
-  <div *ngIf="!inMatch">
+  <div *ngIf="!inMatch && (roundPhase === 'done' || roundPhase === 'selection')" class="space-y-4">
     <button
       *ngIf="!inQueue"
       class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -27,7 +27,7 @@
   </div>
 
   <!-- Durante a partida -->
-  <div *ngIf="inMatch">
+  <div *ngIf="inMatch || roundPhase === 'result' || roundPhase === 'done'">
     <!-- Fase de seleção -->
     <div *ngIf="roundPhase === 'selection'" class="space-y-4">
       <p class="text-white font-bold mb-2">Escolha uma carta:</p>
@@ -80,7 +80,7 @@
 
         <!-- Mensagem de resultado -->
         <p class="text-white mt-4 text-center font-semibold">
-          {{ lr.result || statusMessage }}
+          here {{ lr.result || statusMessage }}
         </p>
 
         <!-- Botões -->
@@ -107,7 +107,7 @@
 
       <!-- Se ainda não houver lastRound, mostra só a mensagem -->
       <div *ngIf="!lastRound() && statusMessage" class="text-center text-white">
-        <p>{{ statusMessage }}</p>
+        <!-- <p>here {{ statusMessage }}</p> -->
         <div class="flex justify-center mt-4">
           <button
             *ngIf="duelFinished"

@@ -5,20 +5,17 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { RiotService } from '../../services/riot.service';
+import { RiotService } from '../../services/riot/riot.service';
 import { Card } from '../../models/card.model';
 import html2canvas from 'html2canvas';
 import { Router, NavigationEnd } from '@angular/router';
-
-import { AuthService } from '../../services/auth.service';
-import { CardStateService } from '../../services/card-state.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { CardStateService } from '../../services/card/card-state.service';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-
-import { CardsService } from '../../services/cards.service';
-import { CreateCardDto } from '../../components/card/card-create.dto';
-
-import { DuelComponent } from '../../pages/duel/duel.component';
+import { CardsService } from '../../services/card/cards.service';
+import { CreateCardDto } from '../../components/card/card-create.dto'; 
+import { DuelService } from '../../services/duel/duel.service';
 
 @Component({
   selector: 'app-navbar',
@@ -44,7 +41,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private router: Router,
     private cardState: CardStateService,
-    private cardsService: CardsService
+    private cardsService: CardsService,
+    private duelService: DuelService
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +74,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    this.duelService.logout();
     this.auth.clearToken();
     this.router.navigate(['/login']);
   }

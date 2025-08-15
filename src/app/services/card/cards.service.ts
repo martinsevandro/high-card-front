@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Card } from '../models/card.model';
-import { CreateCardDto } from '../components/card/card-create.dto';
+import { Card } from '../../models/card.model';
+import { CreateCardDto } from '../../components/card/card-create.dto';
 
 @Injectable({ providedIn: 'root' })
 export class CardsService {

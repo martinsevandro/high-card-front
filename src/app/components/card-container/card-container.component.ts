@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Card } from '../../models/card.model';
-import { CardStateService } from '../../services/card-state.service';
+import { CardStateService } from '../../services/card/card-state.service';
 
 @Component({
   selector: 'app-card-container',

@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   OnDestroy,
 } from '@angular/core';
-import { CardHtmlBuilderService } from '../../services/card-html-builder.service';
+import { CardHtmlBuilderService } from '../../services/card/card-html-builder.service';
 import { SafeHtml } from '@angular/platform-browser';
 import VanillaTilt from 'vanilla-tilt';
 

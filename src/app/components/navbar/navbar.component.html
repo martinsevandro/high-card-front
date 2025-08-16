@@ -79,28 +79,35 @@
   </div>
 
   <!-- DIREITA: Links de navegação -->
-  <div class="flex flex-wrap justify-end items-center gap-4 w-full">
+  <div class="flex w-full items-center justify-between">
     <button
       *ngIf="isAuthenticated() && currentRouter === '/deck' && cartaEsperada"
       (click)="descurtirCarta()"
       type="button"
-      class="px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
+      class="mr-4 px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
     >
       Desvincular Carta
     </button>
 
-    <div class="flex gap-4 flex-wrap items-center ml-auto">
-      <a routerLink="/" routerLinkActive="font-bold" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a *ngIf="isAuthenticated()" routerLink="/deck" routerLinkActive="font-bold">Deck</a>
-      <a *ngIf="isAuthenticated()" routerLink="/duel" routerLinkActive="font-bold">Duelo</a>
-      <a *ngIf="!isAuthenticated()" routerLink="/login" routerLinkActive="font-bold">Login</a>
-      <a *ngIf="!isAuthenticated()" routerLink="/register" routerLinkActive="font-bold">Registrar</a>
-      <a *ngIf="isAuthenticated()" (click)="logout()" class="cursor-pointer">Sair</a>
-      <span *ngIf="isAuthenticated()" class="text-gray-400">
-        Hi, I'm {{ nomeUsuario() }}!
-      </span>
-    </div>
+    <div [ngClass]="isAuthPage() ? 'flex gap-6 justify-center w-full' : 'flex gap-4 flex-wrap items-center ml-auto'">
+      <ng-container *ngIf="isAuthPage(); else normalNavbar">
+        <a routerLink="/" routerLinkActive="font-bold" [routerLinkActiveOptions]="{ exact: true }">Início</a>
+        <a *ngIf="!isAuthenticated()" routerLink="/login" routerLinkActive="font-bold">Login</a>
+        <a *ngIf="!isAuthenticated()" routerLink="/register" routerLinkActive="font-bold">Registrar</a>
+      </ng-container>
 
+      <ng-template #normalNavbar>
+        <a routerLink="/" routerLinkActive="font-bold" [routerLinkActiveOptions]="{ exact: true }">Início</a>
+        <a *ngIf="isAuthenticated()" routerLink="/deck" routerLinkActive="font-bold">Deck</a>
+        <a *ngIf="isAuthenticated()" routerLink="/duel" routerLinkActive="font-bold">Duelo</a>
+        <a *ngIf="!isAuthenticated()" routerLink="/login" routerLinkActive="font-bold">Login</a>
+        <a *ngIf="!isAuthenticated()" routerLink="/register" routerLinkActive="font-bold">Registrar</a>
+        <a *ngIf="isAuthenticated()" (click)="logout()" class="cursor-pointer">Sair</a>
+        <span *ngIf="isAuthenticated()" class="text-gray-400">
+          Hi, I'm {{ nomeUsuario() }}!
+        </span>
+      </ng-template>
+    </div>
   </div>
 </nav>
 

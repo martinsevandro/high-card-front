@@ -83,6 +83,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.auth.isAuthenticated();
   }
 
+  isAuthPage(): boolean {
+    return this.router.url === "/login" || this.router.url === "/register";
+  }
+
   async buscarCarta(): Promise<void> {
     if (!this.name || !this.tag || !this.server) return;
 

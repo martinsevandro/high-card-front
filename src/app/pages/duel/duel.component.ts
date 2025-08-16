@@ -39,6 +39,7 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe()); 
+    this.duelService.disconnect();
   }
 
   joinQueue(): void {
@@ -87,7 +88,10 @@ export class DuelComponent implements OnInit, OnDestroy {
       this.duelState.roundResultPayload$
         .pipe(filter((p): p is RoundResultPayload => p !== null))
         .subscribe(payload => this.handleRoundResult(payload)),
-      this.duelState.duelEnded$.subscribe(data => this.handleDuelEnd(data.winner))
+      this.duelState.duelEnded$.subscribe(data => {
+        if(!data) return;
+        this.handleDuelEnd(data.winner) 
+      })
     );
   }
 

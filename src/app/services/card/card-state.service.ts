@@ -15,7 +15,7 @@ export class CardStateService {
   private cardDeletedSource = new BehaviorSubject<string | null>(null);
   cardDeleted$ = this.cardDeletedSource.asObservable();
 
-  setCard(card: Card) {
+  setCard(card: Card | null) {
     this.cardSource.next(card);
   }
 

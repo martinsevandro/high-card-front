@@ -9,11 +9,15 @@ import { CardStateService } from '../../services/card/card-state.service';
 })
 export class HomeComponent implements OnInit {
   selectedCard: Card | null = null;
-  cardElement!: HTMLElement;
+  cardElement!: HTMLElement | null;
 
   constructor(private cardState: CardStateService) {}
 
   ngOnInit(): void {
+    this.cardState.setCard(null);
+    this.selectedCard = null;
+    this.cardElement = null;
+
     this.cardState.card$.subscribe((card) => {
       this.selectedCard = card;
     });

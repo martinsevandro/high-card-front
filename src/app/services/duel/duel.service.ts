@@ -40,13 +40,13 @@ export class DuelService {
   }
 
   logout() {  
-    this.socket.disconnect(); 
     this.resetState();
+    this.socket.disconnect(); 
+    this.authService.logout();
   }
   
   disconnect() {
     this.socket.disconnect();
-    this.authService.logout();
     this.resetState();
   }
 

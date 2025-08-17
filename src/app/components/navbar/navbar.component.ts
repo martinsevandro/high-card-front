@@ -28,6 +28,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   server: string = 'br1';
   matchId: string = '';
 
+  buttonText = 'Vincular Carta';
+  isProcessing = false;
+
+
   cardElement!: HTMLElement | null;
   cartaEsperada!: Card;
 
@@ -171,6 +175,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   curtirCarta(card: Card): void {
+    if(this.isProcessing) return;
+    this.isProcessing = true;
+    this.buttonText = 'Processando...';
+
+
     const dto: CreateCardDto = {
       gameMode: card.gameMode,
       championName: card.championName,
@@ -225,8 +234,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     };
 
     this.cardsService.saveCard(dto).subscribe({
-      next: () => console.log('Carta vinculada com sucesso'),
-      error: (err) => console.error('Erro ao vincular carta:', err),
+      next: () => {
+        this.buttonText = 'Carta Vinculada!';
+        setTimeout(() => this.buttonText = 'Vincular Carta', 4000);
+        this.isProcessing = false;
+      },
+      error: (err) => {
+        this.buttonText = 'Erro ao Vincular!';
+        setTimeout(() => this.buttonText = 'Vincular Carta', 4000);
+        this.isProcessing = false;
+      }
     });
   }
 
@@ -241,8 +258,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.cardState.emitCardDeleted(this.cartaEsperada._id);
         // console.log('Carta removida com sucesso.');
         this.router.navigate(['/deck']);
-      },
-      error: (err) => console.error('Erro ao remover carta:', err),
+      }
     });
   }
 

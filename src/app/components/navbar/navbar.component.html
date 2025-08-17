@@ -63,11 +63,12 @@
  
         <button
           type="button"
-          *ngIf="isAuthenticated() && cardElement && currentRouter === '/'"
+          *ngIf="isAuthenticated() && cartaEsperada && cardElement && currentRouter === '/'"
           (click)="curtirCarta(cartaEsperada)"
+          [disabled]="isProcessing"
           class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
         >
-          Vincular Carta
+          {{ buttonText }}
         </button>
       </form>
     </ng-container>

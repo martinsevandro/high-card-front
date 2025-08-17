@@ -1,4 +1,3 @@
-// riot.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { Card } from '../../models/card.model'; 

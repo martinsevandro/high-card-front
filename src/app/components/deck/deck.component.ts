@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Card } from '../../models/card.model';
 import { CardsService } from '../../services/card/cards.service';
 import { AuthService } from '../../services/auth/auth.service';
-
 import { CardStateService } from '../../services/card/card-state.service';
 
 @Component({

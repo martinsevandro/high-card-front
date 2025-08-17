@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { CardHtmlBuilderService } from './card-html-builder.service';
 
 describe('CardHtmlBuilderService', () => {

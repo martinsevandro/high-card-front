@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DuelStateService, RoundResultPayload } from './duel-state.service';
 import { SocketService } from './socket.service';
-import { Card } from '../../models/card.model';
 
 @Injectable({ providedIn: 'root' })
 export class DuelLogicService {

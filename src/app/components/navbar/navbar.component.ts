@@ -55,13 +55,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       )
       .subscribe((event) => {
         this.currentRouter = event.urlAfterRedirects;
-        console.log('Rota atual:', this.currentRouter);
+        // console.log('Rota atual:', this.currentRouter);
       });
 
     this.cardState.cardElement$
       .pipe(takeUntil(this.destroy$))
       .subscribe((element) => {
-        console.log('Card element received:', element);
+        // console.log('Card element received:', element);
         this.cardElement = element as HTMLElement;
       });
 
@@ -115,22 +115,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.cartaEsperada = card;
         this.cardLoaded.emit(card);
         this.cardState.setCard(card);
+        this.cardState.setCardMessage(null);  
       } else {
-        console.error('carta nao encontrada');
+        this.cardState.setCard(null);
+        this.cardState.setCardMessage('Carta não encontrada. Verifique os dados.');
       }
     } catch (error) {
-      console.error('Erro ao buscar dados da carta:', error);
+      this.cardState.setCard(null);
+      this.cardState.setCardMessage('Erro ao buscar dados da carta. Tente novamente.');
     }
   }
 
   salvarImagem(): void {
-    console.log('Botão de salvar clicado');
+    // console.log('Botão de salvar clicado');
 
     if (this.cardElement) {
       this.cardState.setCardElement(this.cardElement);
 
       if (!this.cardElement) {
-        console.warn('Carta não encontrada!');
+        // console.warn('Carta não encontrada!');
         return;
       }
 
@@ -222,21 +225,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
     };
 
     this.cardsService.saveCard(dto).subscribe({
-      next: () => console.log('Carta salva com sucesso'),
-      error: (err) => console.error('Erro ao salvar carta:', err),
+      next: () => console.log('Carta vinculada com sucesso'),
+      error: (err) => console.error('Erro ao vincular carta:', err),
     });
   }
 
   descurtirCarta(): void {
     if (!this.cartaEsperada || !this.cartaEsperada._id) {
-      console.error('Nenhuma carta selecionada ou ID ausente.');
+      // console.error('Nenhuma carta selecionada ou ID ausente.');
       return;
     }
 
     this.cardsService.deleteCard(this.cartaEsperada._id).subscribe({
       next: () => {
         this.cardState.emitCardDeleted(this.cartaEsperada._id);
-        console.log('Carta removida com sucesso.');
+        // console.log('Carta removida com sucesso.');
         this.router.navigate(['/deck']);
       },
       error: (err) => console.error('Erro ao remover carta:', err),

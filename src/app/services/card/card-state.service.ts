@@ -15,6 +15,9 @@ export class CardStateService {
   private cardDeletedSource = new BehaviorSubject<string | null>(null);
   cardDeleted$ = this.cardDeletedSource.asObservable();
 
+  private cardMessageSource = new BehaviorSubject<string | null>(null);
+  cardMessage$ = this.cardMessageSource.asObservable();
+
   setCard(card: Card | null) {
     this.cardSource.next(card);
   }
@@ -25,6 +28,10 @@ export class CardStateService {
 
   emitCardDeleted(cardId: string) { 
     this.cardDeletedSource.next(cardId);
+  }
+
+  setCardMessage(message: string | null) {
+    this.cardMessageSource.next(message);
   }
   
 }

@@ -10,6 +10,7 @@ import { CardStateService } from '../../services/card/card-state.service';
 export class HomeComponent implements OnInit {
   selectedCard: Card | null = null;
   cardElement!: HTMLElement | null;
+  cardMessage: string | null = null;
 
   constructor(private cardState: CardStateService) {}
 
@@ -26,6 +27,10 @@ export class HomeComponent implements OnInit {
       if (element) {
         this.cardElement = element;
       }
+    });
+
+    this.cardState.cardMessage$.subscribe((message) => {
+      this.cardMessage = message;
     });
   }
 }

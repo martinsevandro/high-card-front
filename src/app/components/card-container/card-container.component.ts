@@ -10,6 +10,7 @@ import { CardStateService } from '../../services/card/card-state.service';
 })
 export class CardContainerComponent implements OnChanges {
   @Input() card: Card | null = null;
+  @Input() message: string | null = null;
   @Output() cardElementReady = new EventEmitter<HTMLElement>();
 
   constructor(private cardState: CardStateService) {}

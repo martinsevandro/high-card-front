@@ -3,10 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Card } from '../../models/card.model';
 import { CreateCardDto } from '../../components/card/card-create.dto';
+import { environment } from '../../../environments/environments';
 
 @Injectable({ providedIn: 'root' })
 export class CardsService {
-  private readonly API = 'http://localhost:3000/cards';
+  private readonly API = `${environment.apiUrl}/cards`;
 
   constructor(private http: HttpClient) {}
 

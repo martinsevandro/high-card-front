@@ -4,9 +4,12 @@ import { DuelLogicService } from './duel-logic.service';
 import { DuelStateService } from './duel-state.service';
 import { SocketService } from './socket.service';
 import { Card } from '../../models/card.model';
+import { environment } from '../../../environments/environments';
 
 @Injectable({ providedIn: 'root' })
 export class DuelService {
+  private readonly API_URL = environment.apiUrl;
+
   constructor(
     private authService: AuthService,
     private socket: SocketService,
@@ -21,7 +24,7 @@ export class DuelService {
       return;
     }
 
-    this.socket.connect('http://localhost:3000', { token });
+    this.socket.connect(this.API_URL, { token });
     this.logic.setupListeners();
   }
 

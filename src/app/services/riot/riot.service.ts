@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { Card } from '../../models/card.model'; 
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RiotService { 

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Card } from '../../models/card.model';
 import { CreateCardDto } from '../../components/card/card-create.dto';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CardsService {

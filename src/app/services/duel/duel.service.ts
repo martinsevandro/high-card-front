@@ -4,7 +4,7 @@ import { DuelLogicService } from './duel-logic.service';
 import { DuelStateService } from './duel-state.service';
 import { SocketService } from './socket.service';
 import { Card } from '../../models/card.model';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DuelService {

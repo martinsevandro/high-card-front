@@ -8,7 +8,9 @@ import { environment } from '../../../environments/environment';
 export class RiotService { 
   private readonly API_URL = environment.apiUrl;  
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log(environment.debugMessage);
+  }
 
   async getAccountByRiotId(name: string, tag: string, server: string): Promise<any> {
     return this.http.get(`${this.API_URL}/api/player/${name}/${tag}/${server}`).toPromise(); 

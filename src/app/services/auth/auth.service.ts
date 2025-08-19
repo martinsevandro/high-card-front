@@ -15,7 +15,7 @@ interface LoginDto {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = `${environment.apiUrl}/auth`;
+  private readonly API = `${environment.apiUrl}/api/auth`;
 
   constructor(private http: HttpClient) {}
 

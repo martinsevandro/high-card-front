@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html, body {
-  @apply h-full w-full m-0 p-0 bg-black text-white;
+  @apply h-full w-full m-0 p-0 bg-black;
   
   overflow-x: hidden;
   font-feature-settings: "kern" 1, "liga" 1;

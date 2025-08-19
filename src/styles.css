@@ -1,15 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* styles.css */
+html, body {
+  @apply h-full w-full m-0 p-0 bg-black text-white;
+  
+  overflow-x: hidden;
+  font-feature-settings: "kern" 1, "liga" 1;
+} 
 
 body { 
   @apply bg-gradient-to-b from-black via-gray-700 to-black min-h-screen flex flex-col items-center justify-start p-2;
-
-  overflow-x: hidden;
-  font-feature-settings: "kern" 1, "liga" 1;
+ 
+  min-height: -webkit-fill-available;
 }
 
 .text-blur {

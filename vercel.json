@@ -1,6 +1,6 @@
 {
-  "rewrites": [
-    { "source": "/riot.txt", "destination": "/riot.txt" },
-    { "source": "/(.*)", "destination": "/" }
+  "routes": [
+    { "src": "/riot.txt", "dest": "/riot.txt" },
+    { "src": "/(.*)", "dest": "/" }
   ]
 }

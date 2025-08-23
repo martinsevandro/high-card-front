@@ -101,7 +101,7 @@ export class CardHtmlBuilderService {
         'achievement-finalBoss'
       ),
       this.createAchievementConfig(
-        data => data.deaths === 0 && (data.gameMode === 'CHERRY' || data.killParticipation >= 60.0),
+        data => data.deaths === 0 && (data.gameMode === 'URF' || data.gameMode === 'CHERRY' || data.killParticipation >= 60.0),
         'challenge-perfectMatch.png',
         'This is Perfect',
         'achievement-perfectMatch'

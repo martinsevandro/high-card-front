@@ -31,7 +31,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   buttonText = 'Vincular Carta';
   isProcessing = false;
 
-
   cardElement!: HTMLElement | null;
   cartaEsperada!: Card;
 
@@ -50,6 +49,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.currentRouter = this.router.url;
+    
     this.router.events
       .pipe(
         takeUntil(this.destroy$),

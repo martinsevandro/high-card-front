@@ -1,0 +1,23 @@
+<div class="loader-container">
+  <div class="loader-content"> 
+ 
+    <h2 class="status-title  text-white font-semibold">Inicializando Sistema</h2>
+    <p class="status-message  text-white font-semibold">{{ statusMessage }}</p>
+     
+    <div class="progress-indicator">
+      <div class="progress-bar">
+        <div class="progress-fill" [class.active]="statusMessage.includes('Redirecionando')"></div>
+      </div>
+      <div class="progress-dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+ 
+    <div class="help-text text-white font-semibold">
+      <small>Isso pode levar alguns segundos na primeira vez</small>
+    </div>
+
+  </div>
+</div>

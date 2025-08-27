@@ -1,2 +1,2 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<app-backend-loader *ngIf="!backendReady"></app-backend-loader>
+<router-outlet *ngIf="backendReady"></router-outlet>

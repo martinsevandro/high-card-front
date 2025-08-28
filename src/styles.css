@@ -7,13 +7,19 @@ html, body {
   
   overflow-x: hidden;
   font-feature-settings: "kern" 1, "liga" 1;
+
+  height: 100%;
 } 
 
 body { 
-  @apply bg-gradient-to-b from-black via-gray-700 to-black min-h-screen flex flex-col items-center justify-start p-2;
- 
+  @apply bg-gradient-to-b from-black via-gray-700 to-black min-h-screen flex flex-col items-center justify-start;
   min-height: -webkit-fill-available;
 }
+
+app-root {
+  @apply flex flex-col min-h-screen;
+}
+
 
 .text-blur {
   color: rgb(255, 255, 255);

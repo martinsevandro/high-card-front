@@ -1,2 +1,10 @@
 <app-backend-loader *ngIf="!backendReady"></app-backend-loader>
-<router-outlet *ngIf="backendReady"></router-outlet>
+
+<div class="flex flex-col flex-grow " *ngIf="backendReady">
+   
+  <main class="flex-grow m-2">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer class="mt-auto"></app-footer>
+</div>

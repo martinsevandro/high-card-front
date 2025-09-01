@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
 import { DuelStateService, RoundResultPayload } from './duel-state.service';
 import { SocketService } from './socket.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DuelLogicService {
   private mySocketId?: string;
 
-  constructor(
-    private state: DuelStateService,
-    private socket: SocketService
-  ) {}
+  constructor(private state: DuelStateService, private socket: SocketService) {}
 
   setupListeners() {
+    const errorMessages: Record<string, string> = {
+      INSUFFICIENT_DECK: 'Vincule 10 cartas para duelar.',
+      ONESELF_DUEL: 'Não é possível duelar contra si mesmo.',
+      QUEUE_JOIN_FAILED: 'Falha ao entrar na fila.',
+      ROOM_NOT_FOUND: 'Sala não encontrada.',
+      CARD_NOT_FOUND: 'Carta não encontrada.',
+      ALREADY_IN_MATCH: 'Você já está em um duelo em andamento.',
+      ALREADY_IN_QUEUE: 'Você já está na fila.',
+      GENERIC_ERROR: 'Ocorreu um erro inesperado.'
+    };
+
     this.socket.on('connect', () => {
       this.state.statusMessage$.next('Conectado');
       this.mySocketId = this.socket.id;
@@ -22,9 +31,9 @@ export class DuelLogicService {
       this.state.statusMessage$.next('Aguardando oponente...');
     });
 
-    this.socket.on('insuficient_deck', () => {
-      this.state.statusMessage$.next('Você precisa de pelo menos 10 cartas.');
-    });
+    // this.socket.on('insuficient_deck', () => {
+    //   this.state.statusMessage$.next('Você precisa de pelo menos 10 cartas.');
+    // });
 
     this.socket.on('duel_start', (data) => {
       this.state.inMatch$.next(true);
@@ -84,8 +93,18 @@ export class DuelLogicService {
       this.state.emitDuelEnded({ ...data, winner });
     });
 
-    this.socket.on('error', (msg) => {
-      this.state.statusMessage$.next(`Erro: ${msg}`);
+    // this.socket.on('error', (msg) => {
+    //   this.state.statusMessage$.next(`Erro: ${msg}`);
+    // });
+
+    this.socket.on('exception', (err: any) => {
+      console.error('WsException recebida:', err);
+
+      if (err?.code && errorMessages[err.code]) { 
+        this.state.statusMessage$.next(`${errorMessages[err.code]}`);
+      } else { 
+        this.state.statusMessage$.next(`${err.message || 'Erro desconhecido.'}`);
+      }
     });
   }
 

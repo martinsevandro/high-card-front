@@ -4,6 +4,7 @@ import {
   OnInit,
   OnDestroy,
   Output,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { RiotService } from '../../services/riot/riot.service';
 import { Card } from '../../models/card.model';
@@ -45,7 +46,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private cardState: CardStateService,
     private cardsService: CardsService,
-    private duelService: DuelService
+    private duelService: DuelService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -125,9 +127,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.cardState.setCard(null);
         this.cardState.setCardMessage('Carta não encontrada. Verifique os dados.');
       }
+
+      this.cdr.detectChanges();
     } catch (error) {
       this.cardState.setCard(null);
       this.cardState.setCardMessage('Erro ao buscar dados da carta. Tente novamente.');
+      this.cdr.detectChanges();
     }
   }
 

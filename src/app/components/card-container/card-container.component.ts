@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Card } from '../../models/card.model';
 import { CardStateService } from '../../services/card/card-state.service';
 
@@ -8,7 +8,7 @@ import { CardStateService } from '../../services/card/card-state.service';
   templateUrl: './card-container.component.html',
   styleUrls: ['./card-container.component.css']
 })
-export class CardContainerComponent implements OnChanges {
+export class CardContainerComponent implements OnChanges, OnDestroy {
   @Input() card: Card | null = null;
   @Input() message: string | null = null;
   @Output() cardElementReady = new EventEmitter<HTMLElement>();
@@ -24,6 +24,11 @@ export class CardContainerComponent implements OnChanges {
   handleCardReady(cardElement: HTMLElement): void {
     this.cardElementReady.emit(cardElement);
     this.cardState.setCardElement(cardElement);
+  }
+
+  ngOnDestroy(): void {
+    this.cardState.setCard(null);
+    this.cardState.setCardElement(null);
   }
 
 }

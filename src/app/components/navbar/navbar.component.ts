@@ -1,9 +1,7 @@
 import {
-  Component,
-  EventEmitter,
+  Component, 
   OnInit,
-  OnDestroy,
-  Output,
+  OnDestroy, 
   ChangeDetectorRef,
 } from '@angular/core';
 import { RiotService } from '../../services/riot/riot.service';
@@ -13,7 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { CardStateService } from '../../services/card/card-state.service';
 import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { CardsService } from '../../services/card/cards.service';
 import { CreateCardDto } from '../../components/card/card-create.dto'; 
 import { DuelService } from '../../services/duel/duel.service';
@@ -31,12 +29,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   buttonText = 'Vincular Carta';
   isProcessing = false;
+ 
+  get cardElement$() {
+    return this.cardState.cardElement$;
+  }
 
-  cardElement!: HTMLElement | null;
-  cartaEsperada!: Card;
-
-  @Output() cardLoaded = new EventEmitter<Card>();
-
+  get cartaEsperada$() {
+    return this.cardState.card$;
+  }
+ 
   private destroy$ = new Subject<void>();
   public currentRouter: string = '';
 
@@ -64,15 +65,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.currentRouter = event.urlAfterRedirects;
         // console.log('Rota atual:', this.currentRouter);
       });
-
-    this.cardState.cardElement$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((element) => {
-        // console.log('Card element received:', element);
-        this.cardElement = element as HTMLElement;
-      });
-
-    this.cardState.card$.subscribe((card) => (this.cartaEsperada = card as Card));
   }
 
   ngOnDestroy(): void {
@@ -119,38 +111,31 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
 
       if (card) {
-        this.cartaEsperada = card;
-        this.cardLoaded.emit(card);
         this.cardState.setCard(card);
-        this.cardState.setCardMessage(null);  
-      } else {
+        this.cardState.setCardMessage(null); 
+      } else { 
         this.cardState.setCard(null);
         this.cardState.setCardMessage('Carta não encontrada. Verifique os dados.');
       }
-
-      this.cdr.detectChanges();
     } catch (error) {
       this.cardState.setCard(null);
       this.cardState.setCardMessage('Erro ao buscar dados da carta. Tente novamente.');
-      this.cdr.detectChanges();
     }
   }
 
-  salvarImagem(): void {
-    // console.log('Botão de salvar clicado');
+  salvarImagem(cardElement: HTMLElement): void { 
+    
+    if (!cardElement) { 
+      return;
+    }
+    
+    if (cardElement) {
+      this.cardState.setCardElement(cardElement);
 
-    if (this.cardElement) {
-      this.cardState.setCardElement(this.cardElement);
-
-      if (!this.cardElement) {
-        // console.warn('Carta não encontrada!');
-        return;
-      }
-
-      const inner = this.cardElement.querySelector('.flip-inner');
+      const inner = cardElement.querySelector('.flip-inner');
       if (!inner) return;
 
-      const back = this.cardElement.querySelector('.flip-back');
+      const back = cardElement.querySelector('.flip-back');
       if (!back) return;
 
       const isFlipped = inner?.classList.contains('rotate-y-180');
@@ -160,7 +145,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       back && ((back as HTMLElement).style.visibility = 'hidden');
 
       setTimeout(() => {
-        html2canvas(this.cardElement!, {
+        html2canvas(cardElement!, {
           scale: 2,
           useCORS: true,
           allowTaint: false,
@@ -184,7 +169,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if(this.isProcessing) return;
     this.isProcessing = true;
     this.buttonText = 'Processando...';
-
 
     const dto: CreateCardDto = {
       gameMode: card.gameMode,
@@ -253,16 +237,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  descurtirCarta(): void {
-    if (!this.cartaEsperada || !this.cartaEsperada._id) {
-      // console.error('Nenhuma carta selecionada ou ID ausente.');
+  descurtirCarta(cartaEsperada: Card): void {
+    if (!cartaEsperada || !cartaEsperada._id) { 
       return;
     }
 
-    this.cardsService.deleteCard(this.cartaEsperada._id).subscribe({
+    this.cardsService.deleteCard(cartaEsperada._id).subscribe({
       next: () => {
-        this.cardState.emitCardDeleted(this.cartaEsperada._id);
-        // console.log('Carta removida com sucesso.');
+        this.cardState.emitCardDeleted(cartaEsperada._id); 
         this.router.navigate(['/deck']);
       }
     });

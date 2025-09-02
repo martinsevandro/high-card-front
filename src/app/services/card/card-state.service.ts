@@ -22,7 +22,7 @@ export class CardStateService {
     this.cardSource.next(card);
   }
 
-  setCardElement(element: HTMLElement) {
+  setCardElement(element: HTMLElement | null) {
     this.cardElementSource.next(element);
   }
 

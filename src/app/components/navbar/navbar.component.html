@@ -63,45 +63,56 @@
           Buscar
         </button>
 
-        <button
-          type="button"
-          (click)="salvarImagem()"
-          [disabled]="!cardElement"
-          class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold disabled:opacity-50"
-        >
-          Baixar
-        </button>
+        <ng-container *ngIf="cardElement$ | async as element">
+          <button
+            type="button"
+            (click)="salvarImagem(element)"
+            [disabled]="!(cardElement$ | async)"
+            class="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-900 text-white font-semibold disabled:opacity-50"
+          >
+            Baixar
+          </button>
+        </ng-container>
  
-        <button
-          type="button"
-          *ngIf="isAuthenticated() && cartaEsperada && cardElement && currentRouter === '/'"
-          (click)="curtirCarta(cartaEsperada)"
-          [disabled]="isProcessing"
-          class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
-        >
-          {{ buttonText }}
-        </button>
+        <ng-container *ngIf="isAuthenticated() && currentRouter === '/'">
+          <ng-container *ngIf="cartaEsperada$ | async as carta">
+            <ng-container *ngIf="cardElement$ | async">
+              <button
+                type="button"
+                (click)="curtirCarta(carta)"
+                [disabled]="isProcessing"
+                class="px-4 py-2 rounded-md bg-gray-700 hover:bg-blue-900 text-white font-semibold"
+              >
+                {{ buttonText }}
+              </button>
+            </ng-container>
+          </ng-container>
+        </ng-container>
       </form>
     </ng-container>
   </div>
  
-  <div class="flex w-full items-center justify-between">
-    <button
-      *ngIf="isAuthenticated() && currentRouter === '/deck' && cartaEsperada"
-      (click)="descurtirCarta()"
-      type="button"
-      class="mr-4 px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
-    >
-      Desvincular Carta
-    </button>
+  <div class="flex w-full items-center justify-between"> 
 
-    <div [ngClass]="isAuthPage() ? 'flex gap-6 justify-center w-full' : 'flex gap-4 flex-wrap items-center ml-auto'">
+    <ng-container *ngIf="isAuthenticated() && currentRouter === '/deck'">
+      <ng-container *ngIf="cartaEsperada$ | async as carta">
+        <button
+          (click)="descurtirCarta(carta)"
+          type="button"
+          class="mr-4 px-4 py-2 rounded-md bg-gray-700 hover:bg-red-900 text-white font-semibold"
+        >
+          Desvincular Carta
+        </button>
+      </ng-container>
+    </ng-container>
+ 
+    <div [ngClass]="isAuthPage() ? 'flex gap-6 justify-center w-full' : 'flex gap-4 flex-wrap items-center ml-auto'"> 
       <ng-container *ngIf="isAuthPage(); else normalNavbar">
         <a routerLink="/" routerLinkActive="font-bold" [routerLinkActiveOptions]="{ exact: true }">Início</a>
         <a *ngIf="!isAuthenticated()" routerLink="/login" routerLinkActive="font-bold">Login</a>
         <a *ngIf="!isAuthenticated()" routerLink="/register" routerLinkActive="font-bold">Registrar</a>
       </ng-container>
-
+ 
       <ng-template #normalNavbar>
         <a routerLink="/" routerLinkActive="font-bold" [routerLinkActiveOptions]="{ exact: true }">Início</a>
         <a *ngIf="isAuthenticated()" routerLink="/deck" routerLinkActive="font-bold">Deck</a>

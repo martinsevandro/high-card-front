@@ -11,6 +11,7 @@ export interface RoundResultPayload {
 @Injectable({ providedIn: 'root' })
 export class DuelStateService {
   statusMessage$ = new BehaviorSubject<string>('Desconectado');
+  username$ = new BehaviorSubject<string | null>(null);
   inQueue$ = new BehaviorSubject<boolean>(false);
   inMatch$ = new BehaviorSubject<boolean>(false);
   currentDeck$ = new BehaviorSubject<Card[]>([]);
@@ -26,6 +27,10 @@ export class DuelStateService {
 
   private roundResultPayloadSubject = new BehaviorSubject<RoundResultPayload | null>(null);
   roundResultPayload$ = this.roundResultPayloadSubject.asObservable();
+
+  setUsername(username: string) {
+    this.username$.next(username);
+  }
 
   setRoundResultPayload(payload: RoundResultPayload) {
     this.roundResultPayloadSubject.next(payload);

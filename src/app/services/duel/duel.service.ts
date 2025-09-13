@@ -25,7 +25,20 @@ export class DuelService {
     }
 
     this.socket.connect(this.API_URL, { token });
-    this.logic.setupListeners();
+
+    const username = this.authService.getUsername(); 
+    if (!username) {
+      this.state.statusMessage$.next('Nome de usuário não encontrado. Faça login.');
+      return;
+    }
+    this.state.setUsername(username); 
+
+    this.logic.init(username, this.socket.id!); 
+
+    this.socket.on('auth_error', (data: { message: string }) => {
+      this.state.statusMessage$.next(data.message); 
+    });
+
   }
 
   joinQueue() {

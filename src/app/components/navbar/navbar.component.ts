@@ -1,8 +1,7 @@
 import {
   Component, 
   OnInit,
-  OnDestroy, 
-  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 import { RiotService } from '../../services/riot/riot.service';
 import { Card } from '../../models/card.model';
@@ -11,7 +10,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { CardStateService } from '../../services/card/card-state.service';
 import { Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { CardsService } from '../../services/card/cards.service';
 import { CreateCardDto } from '../../components/card/card-create.dto'; 
 import { DuelService } from '../../services/duel/duel.service';
@@ -47,8 +46,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private cardState: CardStateService,
     private cardsService: CardsService,
-    private duelService: DuelService,
-    private cdr: ChangeDetectorRef
+    private duelService: DuelService
   ) {}
 
   ngOnInit(): void {
@@ -62,8 +60,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((event) => {
-        this.currentRouter = event.urlAfterRedirects;
-        // console.log('Rota atual:', this.currentRouter);
+        this.currentRouter = event.urlAfterRedirects; 
       });
   }
 

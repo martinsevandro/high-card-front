@@ -6,8 +6,15 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class DuelLogicService {
   private mySocketId?: string;
+  private myUsername?: string;
 
   constructor(private state: DuelStateService, private socket: SocketService) {}
+
+  init(username: string, socketId: string) {
+    this.myUsername = username;
+    this.mySocketId = socketId;
+    this.setupListeners();
+  }
 
   setupListeners() {
     const errorMessages: Record<string, string> = {
@@ -24,16 +31,13 @@ export class DuelLogicService {
     this.socket.on('connect', () => {
       this.state.statusMessage$.next('Conectado');
       this.mySocketId = this.socket.id;
+      this.myUsername = this.state.username$.value!;
     });
 
     this.socket.on('waiting_for_opponent', () => {
       this.state.inQueue$.next(true);
       this.state.statusMessage$.next('Aguardando oponente...');
-    });
-
-    // this.socket.on('insuficient_deck', () => {
-    //   this.state.statusMessage$.next('Você precisa de pelo menos 10 cartas.');
-    // });
+    }); 
 
     this.socket.on('duel_start', (data) => {
       this.state.inMatch$.next(true);
@@ -87,18 +91,13 @@ export class DuelLogicService {
       this.state.inMatch$.next(false);
 
       let winner: 'me' | 'opponent' | 'draw' = 'draw';
-      if (data.winnerSocketId === this.mySocketId) winner = 'me';
-      else if (data.winnerSocketId) winner = 'opponent';
+      if (data.winner?.username === this.myUsername) winner = 'me';
+      else if (data.winner) winner = 'opponent';
 
       this.state.emitDuelEnded({ ...data, winner });
     });
 
-    // this.socket.on('error', (msg) => {
-    //   this.state.statusMessage$.next(`Erro: ${msg}`);
-    // });
-
-    this.socket.on('exception', (err: any) => {
-      console.error('WsException recebida:', err);
+    this.socket.on('exception', (err: any) => { 
 
       if (err?.code && errorMessages[err.code]) { 
         this.state.statusMessage$.next(`${errorMessages[err.code]}`);

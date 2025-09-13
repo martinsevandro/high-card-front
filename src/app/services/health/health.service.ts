@@ -20,16 +20,14 @@ export class HealthService {
   startPolling(intervalMs: number = 3000): void {
     if (this.isPollingActive || this.backendReadySubject.value) return;
 
-    this.isPollingActive = true;
-    // console.log('Iniciando verificação pro backend...');
+    this.isPollingActive = true; 
 
     this.pollingSubscription = interval(intervalMs)
       .pipe(
         switchMap(() => this.checkHealth())
       )
       .subscribe(isHealthy => {
-        if (isHealthy && !this.backendReadySubject.value) {
-          // console.log('Backend está pronto');
+        if (isHealthy && !this.backendReadySubject.value) { 
           this.backendReadySubject.next(true);
           this.stopPolling();
         }
@@ -53,7 +51,6 @@ export class HealthService {
     this.isPollingActive = false;
     if (this.pollingSubscription) {
       this.pollingSubscription.unsubscribe();
-    }
-    // console.log('Parando verificação pro backend.');
+    } 
   }
 }

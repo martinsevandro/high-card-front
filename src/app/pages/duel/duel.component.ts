@@ -90,7 +90,7 @@ export class DuelComponent implements OnInit, OnDestroy {
         .subscribe(payload => this.handleRoundResult(payload)),
       this.duelState.duelEnded$.subscribe(data => {
         if(!data) return;
-        this.handleDuelEnd(data.winner) 
+        this.handleDuelEnd(data.winner, data.finalResult) 
       })
     );
   }
@@ -114,16 +114,11 @@ export class DuelComponent implements OnInit, OnDestroy {
     if (this.roundHistory.length === 3) this.duelFinished = true;
   }
 
-  private handleDuelEnd(winner: 'me' | 'opponent' | 'draw'): void {
+  private handleDuelEnd(winner: 'me' | 'opponent' | 'draw', finalResult: string): void {
     this.duelFinished = true;
     this.roundPhase = 'result';
     this.inMatch = false;
-    const messages = {
-      me: 'Você venceu o duelo!',
-      opponent: 'Você perdeu o duelo!',
-      draw: 'O duelo terminou empatado!'
-    };
-    this.statusMessage = messages[winner];
+    this.statusMessage = finalResult;
   }
 
   private startSelectionPhase(): void {

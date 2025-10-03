@@ -12,6 +12,8 @@
 O **Frontend** do **High Card** é uma aplicação web que permite aos usuários salvar cartas de partidas de League of Legends, vinculá-las ou removê-las de seu deck e desafiar outros jogadores em um duelo estilo "High Card" baseado nos valores de KDA.  
 Desenvolvido em **Angular v19**, **TypeScript** e estilizado com **Tailwind CSS**. O frontend é deployado na **Vercel** e consome um backend **NestJS** hospedado na **Render**, usando **MongoDB Atlas** como banco de dados.
 
+> Observação: o backend hospedado na Render pode estar em hibernação quando não houver acessos recentes, podendo levar alguns segundos para “acordar” ao tentar acessar a aplicação. Isso ocorre devido o plano gratuito ter essa limitação.
+
 [![Projeto](https://img.shields.io/badge/📱Visit_this_project-000?style=for-the-badge&logo=project)](https://high-card-lol.vercel.app/) 
 
 ## Tecnologias
@@ -42,9 +44,9 @@ Desenvolvido em **Angular v19**, **TypeScript** e estilizado com **Tailwind CSS*
 ## Capturas de Tela
 
 <p align="center">
-    <img src="src/assets/img/Home.png" alt="Home View" width="400px">
-    <img src="src/assets/img/Deck.png" alt="Deck View" width="400px">
-    <img src="src/assets/img/Duel.png" alt="Duel View" width="400px">
+    <img src="src/assets/img/Home.png" alt="Home View" width="265px">
+    <img src="src/assets/img/Deck.png" alt="Deck View" width="265px">
+    <img src="src/assets/img/Duel.png" alt="Duel View" width="265px">
 </p>
 
 ## Como Executar

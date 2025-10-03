@@ -1,59 +1,111 @@
-# HighCardFront
+<div align="center">
+   <h1>High Card Front </h1>
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+   ![Angular](https://img.shields.io/badge/angular-red?style=for-the-badge&logo=angular)
+   ![Node](https://img.shields.io/badge/node.js-43853D?style=for-the-badge&logo=node.js)
+   ![TypeScript](https://img.shields.io/badge/typescript-D4FAFF?style=for-the-badge&logo=typescript)
+   ![JavaScript](https://img.shields.io/badge/javascript-000?style=for-the-badge&logo=javascript) 
 
-## Development server
 
-To start a local development server, run:
+</div>
 
+O **Frontend** do **High Card** é uma aplicação web que permite aos usuários salvar cartas de partidas de League of Legends, vinculá-las ou removê-las de seu deck e desafiar outros jogadores em um duelo estilo "High Card" baseado nos valores de KDA.  
+Desenvolvido em **Angular v19**, **TypeScript** e estilizado com **Tailwind CSS**. O frontend é deployado na **Vercel** e consome um backend **NestJS** hospedado na **Render**, usando **MongoDB Atlas** como banco de dados.
+
+[![Projeto](https://img.shields.io/badge/📱Visit_this_project-000?style=for-the-badge&logo=project)](https://high-card-lol.vercel.app/) 
+
+## Tecnologias
+
+- **Angular v19** para arquitetura baseada em componentes e reactive forms  
+- **Tailwind CSS v3.4.1** para estilização  
+- **RxJS** para gerenciamento de estado reativo (BehaviorSubject & Observable)
+- **WebSocket** para duelos em tempo real  
+- **Node.js** & **TypeScript**  
+- **Vercel** para deploy do frontend  
+- **Render** para deploy do backend
+- **MongoDB Atlas** como banco de dados
+
+## Funcionalidades
+
+|                          |                                                               |
+| ------------------------ | ------------------------------------------------------------- |
+| ✅ Angular v19            | Versão estável utilizada no projeto                           |
+| ✅ Autenticação          | Login com JWT                                                 |
+| ✅ Routing & Guards      | Proteção de rotas com guards e lazy loading                   |
+| ✅ Responsive Design     | Layout responsivo (desktop e mobile)                          |
+| ✅ APIs                  | Integração real com a Riot Games API (requer key)             |
+| ✅ Criação de Deck       | Vincular e desvincular cartas com backend integrado           |
+| ✅ Duelos em tempo real  | Comunicação via WebSocket entre dois jogadores                |
+| ✅ Health Check          | Verificação automática do backend na Render                   | 
+
+
+## Capturas de Tela
+
+<p align="center">
+    <img src="src/assets/img/Home.png" alt="Home View" width="400px">
+    <img src="src/assets/img/Deck.png" alt="Deck View" width="400px">
+    <img src="src/assets/img/Duel.png" alt="Duel View" width="400px">
+</p>
+
+## Como Executar
+
+**Importante:** Este frontend depende do **backend ativo** e de uma instância do **MongoDB** (local, Atlas ou via Docker).  
+O backend também precisa estar configurado com uma **Riot API Key** para acessar os dados das partidas.
+Veja no [README do backend](https://github.com/martinsevandro/high-card-back/blob/main/README.md) as instruções completas sobre como configurar a key e rodar o backend. 
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)  
+- npm (versão 9 ou superior)  
+
+> Observação: não é necessário instalar o Angular CLI globalmente. Os comandos abaixo já usam a versão definida em `devDependencies`.
+
+### Passos
+
+1. **Clonar o repositório**
 ```bash
-ng serve
+git clone https://github.com/martinsevandro/high-card-front.git
+cd high-card-front
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. **Instalar dependências**
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+3. **Rodar o servidor de desenvolvimento** 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
-
-To build the project run:
-
+4. **Abrir no navegador**
 ```bash
-ng build
+http://localhost:4200/
 ```
+A aplicação recarregará automaticamente se você alterar qualquer arquivo do código-fonte.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Sugestões e Feedback
 
-## Running unit tests
+Este projeto é principalmente um projeto de **portfólio pessoal**, portanto contribuições diretas (pull requests) **não são aceitas**.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+No entanto:
 
-```bash
-ng test
-```
+**Forks** são bem-vindos: sinta-se à vontade para modificar o projeto no seu próprio fork para experimentar ou estender funcionalidades.
 
-## Running end-to-end tests
+**Feedback e sugestões** são incentivados: se tiver ideias para melhorar a UI, UX ou recursos, abra uma issue ou entre em contato diretamente.
 
-For end-to-end (e2e) testing, run:
+### Aviso sobre a Riot Games API
 
-```bash
-ng e2e
-```
+Este projeto utiliza dados e recursos da Riot Games API exclusivamente para fins educacionais e de estudo. Nenhum conteúdo do League of Legends é explorado comercialmente, vendido ou redistribuído.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Os usuários que desejarem testar o projeto podem gerar uma **chave temporária da Riot** para acessar os dados da API, conforme permitido pelo termo de uso da Riot.
 
-## Additional Resources
+## Licença
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Educational Use License (EUL) 1.0
+
+Copyright (c) 2025 Francisco Evandro Ribeiro Martins Filho
+
+O uso, cópia, modificação e distribuição deste software são permitidos somente para fins educacionais e não comerciais, conforme descrito no arquivo [LICENSE](./LICENSE).
+
+---
